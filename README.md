@@ -4,7 +4,7 @@
 
 > Based on work by:
 
-> Weishaar, Tom. "Running without filenames". Open-Apple Jan. 1985 Vol. 1, No. 0: p. 7 (<http://apple2online.com/web_documents/Open%20Apple%20Vol1No00.pdf>)
+> Weishaar, Tom. *Running without filenames*. Open-Apple Jan. 1985 Vol. 1, No. 0: p. 7 (<http://apple2online.com/web_documents/Open%20Apple%20Vol1No00.pdf>)
 
 
 ### Features
