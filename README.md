@@ -9,9 +9,6 @@
 
 ### Features
 
-*  Apple II+, IIe support.
-*  Big and little-endian machine support.
-	*  Little-endian tested.
 *  Platforms tested:
 	*  32-bit/64-bit x86 OS/X.
 	*  32-bit x86 Windows/MinGW.
