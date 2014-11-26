@@ -1,6 +1,6 @@
 ### Description
 
-`c2d` is a small utility that will read Apple II binary and monitor text files and output a DOS ordered dsk image that will boot your code quickly.
+`c2d` is a small utility that will read Apple II binary and monitor text files and output a DOS ordered diskette image that will boot your code quickly.
 
 > Based on work by:
 
