@@ -21,7 +21,7 @@
 | README.md        | This File            |
 | c2d.c            | Source File          |
 | c2d.h            | Source File          |
-| bin/c2d          | OS/X Binary          |
+| bin/c2d          | OS/X x86 Binary      |
 | bin/c2d.exe      | Windows Binary       |
 | gameserverclient | Test Apple II Binary |
 
@@ -90,6 +90,10 @@ Examples:
         c2d -m test,300 test.dsk
         c2d -s 7300 alpha4,400 alpha4.dsk
 ```
+
+### Bugs
+
+Yes.  No input checking.  Big Endian untested.
 
 
 ### The Ugly Stuff
