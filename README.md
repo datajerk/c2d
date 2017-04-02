@@ -59,7 +59,7 @@ Windows/MinGW:
 ### Usage/Examples
 ```
 usage:  c2d [-vh?]
-        c2d [-m]   input[.mon],[load_address] output.dsk
+        c2d [-m] [-s start address override] input[.mon],[load_address] output.dsk
 
         -h|? this help
         -m jump to monitor after booting
@@ -85,7 +85,7 @@ Examples:
 
 ### The Ugly Stuff
 
-c2d, Code to Disk, Version 0.2, Sun Apr  2 00:59:38 UTC 2017
+c2d, Code to Disk, Version 0.3, Sat Apr  1 19:57:16 MDT 2017
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 

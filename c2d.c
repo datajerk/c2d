@@ -1,6 +1,6 @@
 /*
 
-c2d, Code to Disk, Version 0.2, Sun Apr  2 00:59:38 UTC 2017
+c2d, Code to Disk, Version 0.3, Sat Apr  1 19:57:16 MDT 2017
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
@@ -53,7 +53,7 @@ Bugs:
 #include <sys/stat.h>
 #include "c2d.h"
 
-#define VERSION "Version 0.2"
+#define VERSION "Version 0.3"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
@@ -65,13 +65,13 @@ char *getext(char *filename);
 int main(int argc, char **argv)
 {
 	FILE *ifp, *ofp;
-	int c, j, k, start, inputtype, warm = 0, filesize = 0;
+	int c, j, k, start, start_override = 0, inputtype, warm = 0, filesize = 0;
 	struct stat st;
 	char *filetypes[] = {"BINARY","MONITOR"};
 	char *ext, filename[256], load_address[10];
 
 	opterr = 1;
-	while((c = getopt(argc, argv, "vmh?")) != -1)
+	while((c = getopt(argc, argv, "vmh?s:")) != -1)
 		switch(c) {
 			case 'm':
 				warm = 1;
@@ -79,6 +79,9 @@ int main(int argc, char **argv)
 			case 'v':		// version
 				fprintf(stderr,"\n%s\n\n",VERSION);
 				return 1;
+				break;
+			case 's':       // override rate for -1/-2 only
+				start_override = (int)strtol(optarg, (char **)NULL, 16);
 				break;
 			case 'h':		// help
 			case '?':
@@ -140,8 +143,6 @@ int main(int argc, char **argv)
 			filesize |= b << 8;
 		}
 
-printf("debug: %x %x\n\n",start,start&0xFF);
-
 		//check for errors
 		fread(&blank.track[1].sector[0].byte[start & 0xFF], filesize, 1, ifp);
 	}
@@ -186,6 +187,9 @@ printf("debug: %x %x\n\n",start,start&0xFF);
 
 	if(warm)
 		start = 0xFF69;
+
+	if(start_override)
+		start = start_override;
 
 	blank.track[0].sector[1].byte[0x3B] = 0x4C;
 	blank.track[0].sector[1].byte[0x3C] = start & 0xFF;
