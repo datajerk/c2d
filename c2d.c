@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	fprintf(stderr,"Reading %s, type %s, start: $",filename,filetypes[inputtype]);
+	fprintf(stderr,"Reading %s, type %s, load address: $",filename,filetypes[inputtype]);
 
 	if(inputtype == BINARY) {
 		unsigned char b;

@@ -15,3 +15,7 @@ bin/c2d.exe: c2d.c c2d.h
 
 clean:
 	rm -f bin/*
+
+test: gameserverclient bin/c2d bin/c2d.exe
+	./test.sh
+
