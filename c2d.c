@@ -1,6 +1,6 @@
 /*
 
-c2d, Code to Disk, Version 0.3, Sat Apr  1 19:57:16 MDT 2017
+c2d, Code to Disk, Version 0.31, Sun Apr  2 16:33:28 UTC 2017
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
@@ -53,7 +53,7 @@ Bugs:
 #include <sys/stat.h>
 #include "c2d.h"
 
-#define VERSION "Version 0.3"
+#define VERSION "Version 0.31"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
@@ -81,7 +81,8 @@ int main(int argc, char **argv)
 				return 1;
 				break;
 			case 's':       // override rate for -1/-2 only
-				start_override = (int)strtol(optarg, (char **)NULL, 16);
+				warm = 0;
+				start_override = (int)strtol(optarg, (char **)NULL, 16); // todo: input check
 				break;
 			case 'h':		// help
 			case '?':
@@ -113,7 +114,7 @@ int main(int argc, char **argv)
 	if(k == 0)
 		start = -1;
 	else
-		start = (int)strtol(load_address, (char **)NULL, 16);
+		start = (int)strtol(load_address, (char **)NULL, 16); // todo: input check
 
 	if((ext = getext(filename)) != NULL)
 		if(strcmp(ext,"mon") == 0 || strcmp(ext,"MON") == 0)
@@ -147,6 +148,7 @@ int main(int argc, char **argv)
 		fread(&blank.track[1].sector[0].byte[start & 0xFF], filesize, 1, ifp);
 	}
 
+	// todo: lots of input checking 
 	if(inputtype == MONITOR) {
 		int byte, naddr;
 		char addrs[8], s;
@@ -183,7 +185,7 @@ int main(int argc, char **argv)
 	blank.track[0].sector[1].byte[0x1A] = ceil((filesize + (start & 0xFF))/ 256.0) - 16*(ceil((filesize + (start & 0xFF)) / 4096.0) - 1) - 1;
 
 	fprintf(stderr,"Number of sectors:    %d\n",(int)ceil((filesize + (start & 0xFF)) / 256.0));
-	fprintf(stderr,"Sector page range:    $%02X - $%02X\n",start >> 8,(start + filesize - 1) >> 8);
+	fprintf(stderr,"Memory page range:    $%02X - $%02X\n",start >> 8,(start + filesize - 1) >> 8);
 
 	if(warm)
 		start = 0xFF69;

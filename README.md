@@ -87,7 +87,7 @@ Examples:
 
 ### The Ugly Stuff
 
-c2d, Code to Disk, Version 0.3, Sat Apr  1 19:57:16 MDT 2017
+c2d, Code to Disk, Version 0.31, Sun Apr  2 16:33:28 UTC 2017
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
