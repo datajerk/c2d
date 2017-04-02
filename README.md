@@ -16,13 +16,14 @@
 
 ### Distribution Files
 
-| Filename       | Description    |
-|----------------|----------------|
-| README.md      | This File      |
-| c2d.c          | Source File    |
-| c2d.h          | Source File    |
-| bin/c2d        | OS/X Binary    |
-| bin/c2d.exe    | Windows Binary |
+| Filename         | Description          |
+|------------------|----------------------|
+| README.md        | This File            |
+| c2d.c            | Source File          |
+| c2d.h            | Source File          |
+| bin/c2d          | OS/X Binary          |
+| bin/c2d.exe      | Windows Binary       |
+| gameserverclient | Test Apple II Binary |
 
 
 ### Download
