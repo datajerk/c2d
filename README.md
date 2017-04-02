@@ -39,6 +39,12 @@ Download <https://github.com/datajerk/c2d/archive/master.zip> and extract.
 
 ### Build Notes
 
+Unix/Linux:
+
+	make
+
+*or*
+
 OS/X:
 
 	gcc -Wall -O -o c2d c2d.c
