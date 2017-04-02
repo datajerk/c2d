@@ -24,6 +24,7 @@
 | bin/c2d          | OS/X x86 Binary      |
 | bin/c2d.exe      | Windows Binary       |
 | gameserverclient | Test Apple II Binary |
+| test.sh          | test script          |
 
 
 ### Download
