@@ -63,6 +63,7 @@ usage:  c2d [-vh?]
 
         -h|? this help
         -m jump to monitor after booting
+        -s XXXX jump to XXXX after booting
         -v print version number and exit
 
 input without a .mon extension is assumed to be a binary with a 4 byte header.
@@ -80,6 +81,7 @@ Examples:
         c2d hello.mon hello.dsk 
         c2d hello,800 hello.dsk 
         c2d -m test,300 test.dsk
+        c2d -s 7300 alpha4,400 alpha4.dsk\n\
 ```
 
 
