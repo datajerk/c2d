@@ -16,13 +16,13 @@
 
 ### Distribution Files
 
-| Filename   | Description    |
-|------------|----------------|
-| c2d        | OS/X Binary    |
-| c2d.c      | Source File    |
-| c2d.exe    | Windows Binary |
-| c2d.h      | Source File    |
-| README.md  | This File      |
+| Filename       | Description    |
+|----------------|----------------|
+| README.md      | This File      |
+| c2d.c          | Source File    |
+| c2d.h          | Source File    |
+| bin/c2d        | OS/X Binary    |
+| bin/c2d.exe    | Windows Binary |
 
 
 ### Download
@@ -85,16 +85,19 @@ Examples:
 
 ### The Ugly Stuff
 
-c2d, Code to Disk, Version 0.1, Fri Feb 24 22:04:42 GMT 2012
+c2d, Code to Disk, Version 0.2, Sun Apr  2 00:59:38 UTC 2017
 
-(c) 2012 All Rights Reserved, Egan Ford (egan@sense.net, datajerk@gmail.com)
+(c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
-> THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY 
 KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 PARTICULAR PURPOSE.
 
-License:
+Based on work by:
+    * Weishaar, Tom. "Running without filenames". Open-Apple Jan. 1985 Vol. 1, No. 0: p. 7
+      (http://apple2online.com/web_documents/Open%20Apple%20Vol1No00.pdf)
 
-*  Do what you like, remember to credit all sources when using.
+License:
+    *  Do what you like, remember to credit all sources when using.
 
