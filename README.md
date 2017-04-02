@@ -3,7 +3,7 @@
 `c2d` is a small utility that will read Apple II binary and monitor text files and output a DOS ordered diskette image that will boot your code quickly.
 
 > Based on work by:
-
+> 
 > Weishaar, Tom. *Running without filenames*. Open-Apple Jan. 1985 Vol. 1, No. 0: p. 7 (<http://apple2online.com/web_documents/Open%20Apple%20Vol1No00.pdf>)
 
 
@@ -81,7 +81,7 @@ Examples:
         c2d hello.mon hello.dsk 
         c2d hello,800 hello.dsk 
         c2d -m test,300 test.dsk
-        c2d -s 7300 alpha4,400 alpha4.dsk\n\
+        c2d -s 7300 alpha4,400 alpha4.dsk
 ```
 
 
@@ -96,6 +96,5 @@ KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
 IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 PARTICULAR PURPOSE.
 
-License:
-    *  Do what you like, remember to credit all sources when using.
+License: Do what you like, remember to credit all sources when using.
 
