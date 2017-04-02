@@ -1,8 +1,8 @@
 /*
 
-c2d, Code to Disk, Version 0.1, Fri Feb 24 22:04:42 GMT 2012
+c2d, Code to Disk, Version 0.2, Sun Apr  2 00:59:38 UTC 2017
 
-(c) 2012 All Rights Reserved, Egan Ford (egan@sense.net)
+(c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
 THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY 
 KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
@@ -53,7 +53,7 @@ Bugs:
 #include <sys/stat.h>
 #include "c2d.h"
 
-#define VERSION "Version 0.1"
+#define VERSION "Version 0.2"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
@@ -65,7 +65,7 @@ char *getext(char *filename);
 int main(int argc, char **argv)
 {
 	FILE *ifp, *ofp;
-	int c, i, j, k, start, inputtype, warm = 0, filesize = 0;
+	int c, j, k, start, inputtype, warm = 0, filesize = 0;
 	struct stat st;
 	char *filetypes[] = {"BINARY","MONITOR"};
 	char *ext, filename[256], load_address[10];
@@ -140,6 +140,8 @@ int main(int argc, char **argv)
 			filesize |= b << 8;
 		}
 
+printf("debug: %x %x\n\n",start,start&0xFF);
+
 		//check for errors
 		fread(&blank.track[1].sector[0].byte[start & 0xFF], filesize, 1, ifp);
 	}
@@ -174,12 +176,12 @@ int main(int argc, char **argv)
 	fprintf(stderr,"%04X, length: %d\n",start,filesize);
 	fprintf(stderr,"\n");
 
-	blank.track[0].sector[1].byte[0xE0] = ceil(filesize / 256.0);
+	blank.track[0].sector[1].byte[0xE0] = ceil((filesize + (start & 0xFF)) / 256.0);
 	blank.track[0].sector[1].byte[0xE7] = ((start + filesize - 1) >> 8) + 1;
-	blank.track[0].sector[1].byte[0x15] = ceil(filesize / 4096.0);
-	blank.track[0].sector[1].byte[0x1A] = ceil(filesize / 256.0) - 16*(ceil(filesize / 4096.0) - 1) - 1;
+	blank.track[0].sector[1].byte[0x15] = ceil((filesize + (start & 0xFF))/ 4096.0);
+	blank.track[0].sector[1].byte[0x1A] = ceil((filesize + (start & 0xFF))/ 256.0) - 16*(ceil((filesize + (start & 0xFF)) / 4096.0) - 1) - 1;
 
-	fprintf(stderr,"Number of sectors:    %d\n",(int)ceil(filesize / 256.0));
+	fprintf(stderr,"Number of sectors:    %d\n",(int)ceil((filesize + (start & 0xFF)) / 256.0));
 	fprintf(stderr,"Sector page range:    $%02X - $%02X\n",start >> 8,(start + filesize - 1) >> 8);
 
 	if(warm)
