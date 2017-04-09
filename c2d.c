@@ -66,7 +66,7 @@ char *getext(char *filename);
 int main(int argc, char **argv)
 {
 	FILE *ifp, *ofp;
-	int c, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0;
+	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0;
 	int loaderstart, loader = 0, loadersize = 0, textpagesize = 0;
 	struct stat st;
 	char *filetypes[] = {"BINARY","MONITOR"};
@@ -224,16 +224,13 @@ int main(int argc, char **argv)
 		fread(&blank.track[1].sector[0].byte[0], textpagesize, 1, ifp);
 		fclose(ifp);
 
-		if ((ifp = fopen(LOADER, "rb")) == NULL) {
-			fprintf(stderr,"Cannot read: %s\n\n",LOADER);
+		if((loadersize = sizeof(loadercode)) > 256) {
+			fprintf(stderr,"Loader code size %d > 256\n\n",loadersize);
 			return 1;
 		}
 
-		stat(LOADER,&st);
-		loadersize = st.st_size;
-
-		fread(&blank.track[1].sector[4].byte[0], loadersize, 1, ifp);
-		fclose(ifp);
+		for(i=0;i<loadersize;i++)
+			blank.track[1].sector[4].byte[i]=loadercode[i];
 
 		// loader args
 		// lasttrack
@@ -271,7 +268,7 @@ int main(int argc, char **argv)
 		fprintf(stderr,"After boot, jump to:         $%04X\n",loaderstart);
 		fprintf(stderr,"After loader, jump to:       $%04X\n",start);
 		fprintf(stderr,"\n");
-		fprintf(stderr,"Writing %s to T:02/S:00 - T:%02d/S:%02d on %s\n\n",filename,blank.track[1].sector[4].byte[st.st_size],blank.track[1].sector[4].byte[st.st_size+1],OUTFILE);
+		fprintf(stderr,"Writing %s to T:02/S:00 - T:%02d/S:%02d on %s\n\n",filename,blank.track[1].sector[4].byte[sizeof(loadercode)],blank.track[1].sector[4].byte[sizeof(loadercode)+1],OUTFILE);
 	}
 
 	if ((ofp = fopen(OUTFILE, "wb")) == NULL) {
