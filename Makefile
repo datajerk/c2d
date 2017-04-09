@@ -7,6 +7,9 @@ windows: bin/c2d.exe
 
 dist: all windows
 
+c2d.h: c2d.h.0 asm/loader.s makeheader
+	./makeheader
+
 bin/c2d: c2d.c c2d.h
 	gcc -Wall -Wno-missing-braces -I. -O3 -o bin/c2d c2d.c -lm
 
