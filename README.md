@@ -16,15 +16,21 @@
 
 ### Distribution Files
 
-| Filename         | Description          |
-|------------------|----------------------|
-| README.md        | This File            |
-| c2d.c            | Source File          |
-| c2d.h            | Source File          |
-| bin/c2d          | OS/X x86 Binary      |
-| bin/c2d.exe      | Windows Binary       |
-| gameserverclient | Test Apple II Binary |
-| test.sh          | test script          |
+| Filename          | Description          |
+|-------------------|----------------------|
+| README.md         | This File            |
+| c2d.c             | Source File          |
+| c2d.h.0           | Source File          |
+| text2page.c       | Source File          |
+| Makefile          | c2d Makefile         |
+| asm/loader.s      | c2d loader source    |
+| asm/Makefile      | c2d loader Makefile  |
+| bin/c2d           | OS/X x86 Binary      |
+| bin/c2d.exe       | Windows Binary       |
+| bin/text2page     | OS/X x86 Binary      |
+| bin/text2page.exe | Windows Binary       |
+| gameserverclient* | Test Apple II Binary |
+| test.sh           | test script          |
 
 
 ### Download
@@ -46,25 +52,20 @@ Unix/Linux:
 
 *or*
 
-OS/X:
+OS/X, Linux, Cygwin:
 
-	gcc -Wall -O -o c2d c2d.c
-
-Linux:
-
-	gcc -Wall -O -o c2d c2d.c -lm
-
-Windows/Cygwin:
-
-	gcc -Wall -O -o c2d c2d.c
+	gcc -Wall -Wno-missing-braces -I. -O3 -o c2d c2d.c -lm
+	gcc -Wall -O3 -o bin/text2page text2page.c -lm
 
 Windows/MinGW:
 
 	PATH=C:\MinGW\bin;%PATH%
-	gcc -Wall -O -static -o c2d c2d.c
+	gcc -Wall -Wno-missing-braces -static -I. -O3 -o c2d c2d.c -lm
+	gcc -Wall -O3 --static -o bin/text2page text2page.c -lm
 
 
-### Usage/Examples
+### c2d Usage/Examples
+
 ```
 usage:  c2d [-vh?]
         c2d [-m] [-s start address override] input[.mon],[load_address] output.dsk
@@ -72,9 +73,11 @@ usage:  c2d [-vh?]
         -h|? this help
         -m jump to monitor after booting
         -s XXXX jump to XXXX after booting
+        -t filename where filename is a 1K $400-$7FF text page splash screen.
+           The splash screen will display while the binary is loading.
         -v print version number and exit
 
-input without a .mon extension is assumed to be a binary with a 4 byte header.
+Input without a .mon extension is assumed to be a binary with a 4 byte header.
 If the header is missing then you must append ,load_address to the binary input
 filename, e.g. filename,800.  The load address will be read as hex.
 
@@ -90,6 +93,15 @@ Examples:
         c2d hello,800 hello.dsk 
         c2d -m test,300 test.dsk
         c2d -s 7300 alpha4,400 alpha4.dsk
+        c2d -t gameserverclient.textpage gameserverclient,800 gameserverclient.dsk
+```
+
+### text2page Example
+
+Input is expected to be ASCII text.  Only the first 40 characters/line and the first 24 lines are read.  See `gameserverclient.text` example.
+
+```
+text2page <gameserverclient.text >gameserverclient.textpage
 ```
 
 ### Bugs
@@ -99,7 +111,7 @@ Yes.  No input checking.  Big Endian untested.
 
 ### The Ugly Stuff
 
-c2d, Code to Disk, Version 0.31, Sun Apr  2 16:33:28 UTC 2017
+c2d, Code to Disk, Version 0.4, Sun Apr  9 03:16:22 UTC 2017
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
