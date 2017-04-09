@@ -11,21 +11,24 @@ c2d.h: c2d.h.0 asm/loader.s makeheader
 	./makeheader
 
 bin/c2d: c2d.c c2d.h
-	gcc -Wall -Wno-missing-braces -I. -O3 -o bin/c2d c2d.c -lm
+	gcc -Wall -Wno-missing-braces -I. -O3 -o $@ $< -lm
 
 bin/c2d.exe: c2d.c c2d.h
-	$(WIN32GCC) -Wall -Wno-missing-braces -I. -O3 -o bin/c2d.exe c2d.c
+	$(WIN32GCC) -Wall -Wno-missing-braces -I. -O3 -o $@ $<
 
 bin/text2page: text2page.c
-	gcc -Wall -O3 -o bin/text2page text2page.c -lm
+	gcc -Wall -O3 -o $@ $< -lm
 
 bin/text2page.exe: text2page.c
-	$(WIN32GCC) -Wall -O3 -o bin/text2page.exe text2page.c
+	$(WIN32GCC) -Wall -O3 -o $@ $<
 
 clean:
 	rm -f bin/* *.dsk c2d.h c2d.h.1
 	(cd asm; make clean)
 
-test: gameserverclient dist
+gameserverclient.text:
+	figlet -c -w 40 -f slant "Game Server Client Online" >$@
+
+test: gameserverclient gameserverclient.text dist
 	./test.sh
 
