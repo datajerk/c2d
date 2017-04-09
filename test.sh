@@ -17,7 +17,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo FAILED
+	echo "FAILED $CHECK != $SUM (expect)"
 	exit 1
 fi
 
@@ -33,11 +33,11 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo FAILED
+	echo "FAILED $CHECK != $SUM (expect)"
 	exit 1
 fi
 
-SUM=aaed7ee47fde72a69435d146f01301f4
+SUM=f27ea2a4fcc7c85ac25c3eacba24e958
 
 rm -f ${BIN}.dsk
 echo
@@ -52,7 +52,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo FAILED
+	echo "FAILED $CHECK != $SUM (expect)"
 	exit 1
 fi
 
@@ -70,6 +70,8 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo FAILED
+	echo "FAILED $CHECK != $SUM (expect)"
 	exit 1
 fi
+
+echo

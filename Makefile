@@ -26,8 +26,8 @@ clean:
 	rm -f bin/* *.dsk c2d.h c2d.h.1
 	(cd asm; make clean)
 
-gameserverclient.text:
-	figlet -c -w 40 -f slant "Game Server Client Online" >$@
+gameserverclient.text: Makefile
+	figlet -c -w 40 -f slant "Game Server Online Client" >$@
 
 test: gameserverclient gameserverclient.text dist
 	./test.sh
