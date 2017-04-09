@@ -14,7 +14,7 @@ unsigned char holes[] = {
 int main()
 {
 	char c, highbit = 0x80;
-	int i, j, k, columns = 0, lines = 0, linemap[24];
+	int i, j, k, column = 0, line = 0, linemap[24];
 	unsigned char screen[24][40];
 
 	// build table
@@ -33,18 +33,18 @@ int main()
 	while((c = getchar()) != EOF) {
 		if(c == '\r') // windows trash
 			continue;
-		if(columns > 39) // user didn't read the docs
+		if(column > 39) // user didn't read the docs
 			continue;
-		if(lines > 23) // ditto
+		if(line > 23) // ditto
 			break;
 		if(c == '\n') { // end of line
-			columns=0;
-			lines++;
+			column=0;
+			line++;
 			continue;
 		}
 
-		screen[linemap[lines]][columns] = c | highbit;
-		columns++;
+		screen[linemap[line]][column] = c | highbit;
+		column++;
 	}
 
 	// dump to stdout
