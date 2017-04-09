@@ -21,6 +21,7 @@
 | README.md         | This File            |
 | c2d.c             | Source File          |
 | c2d.h.0           | Source File          |
+| makeheader        | c2d.h build script   |
 | text2page.c       | Source File          |
 | Makefile          | c2d Makefile         |
 | asm/loader.s      | c2d loader source    |
