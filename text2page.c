@@ -33,9 +33,9 @@ int main()
 	while((c = getchar()) != EOF) {
 		if(c == '\r') // windows trash
 			continue;
-		if(columns > 40) // user didn't read the docs
+		if(columns > 39) // user didn't read the docs
 			continue;
-		if(lines > 24) // ditto
+		if(lines > 23) // ditto
 			break;
 		if(c == '\n') { // end of line
 			columns=0;
