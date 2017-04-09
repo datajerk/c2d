@@ -18,9 +18,11 @@ usage:  c2d [-vh?]\n\
         -h|? this help\n\
         -m jump to monitor after booting\n\
         -s XXXX jump to XXXX after booting\n\
+        -t filename where filename is a 1K $400-$7FF text page splash screen.\n\
+           The splash screen will display while the binary is loading.\n\
         -v print version number and exit\n\
 \n\
-input without a .mon extension is assumed to be a binary with a 4 byte header.\n\
+Input without a .mon extension is assumed to be a binary with a 4 byte header.\n\
 If the header is missing then you must append ,load_address to the binary input\n\
 filename, e.g. filename,800.  The load address will be read as hex.\n\
 \n\
@@ -36,6 +38,7 @@ Examples:\n\
         c2d hello,800 hello.dsk \n\
         c2d -m test,300 test.dsk\n\
         c2d -s 7300 alpha4,400 alpha4.dsk\n\
+        c2d -t gameserverclient.textpage gameserverclient,800 gameserverclient.dsk\n\
 \n\
 ";
 
