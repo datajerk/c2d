@@ -26,6 +26,6 @@ clean:
 	rm -f bin/* *.dsk c2d.h c2d.h.1
 	(cd asm; make clean)
 
-test: gameserverclient bin/c2d bin/c2d.exe bin/text2page bin/text2page.exe
+test: gameserverclient dist
 	./test.sh
 
