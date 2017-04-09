@@ -23,7 +23,8 @@ bin/text2page.exe: text2page.c
 	$(WIN32GCC) -Wall -O3 -o bin/text2page.exe text2page.c
 
 clean:
-	rm -f bin/* *.dsk
+	rm -f bin/* *.dsk c2d.h c2d.h.1
+	(cd asm; make clean)
 
 test: gameserverclient bin/c2d bin/c2d.exe
 	./test.sh
