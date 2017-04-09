@@ -69,7 +69,7 @@ Windows/MinGW:
 
 ```
 usage:  c2d [-vh?]
-        c2d [-m] [-s start address override] input[.mon],[load_address] output.dsk
+        c2d [-m] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk
 
         -h|? this help
         -m jump to monitor after booting
@@ -112,7 +112,7 @@ Yes.  No input checking.  Big Endian untested.
 
 ### The Ugly Stuff
 
-c2d, Code to Disk, Version 0.4, Sun Apr  9 03:16:22 UTC 2017
+c2d, Code to Disk, Version 0.42, Sun Apr  9 03:16:22 UTC 2017
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 

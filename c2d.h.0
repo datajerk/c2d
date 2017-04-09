@@ -13,7 +13,7 @@ typedef struct d {
 
 const char *usagetext="\n\
 usage:  c2d [-vh?]\n\
-        c2d [-m] [-s start address override] input[.mon],[load_address] output.dsk\n\
+        c2d [-m] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk\n\
 \n\
         -h|? this help\n\
         -m jump to monitor after booting\n\

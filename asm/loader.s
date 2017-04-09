@@ -12,11 +12,12 @@ hipage	=	$B500
 rwtsprm	=	$B7E8		; looked at dos 3.3 disk, not using $3E3 to find
 rwts	=	$B7B5
 preg	=	$48		; mon p reg
-;trkcnt	=	$00		; track counter
-;segcnt	=	$01		; loop var
-;buffer	=	$02		; MSB of RWTS buffer
-;secnum	=	$03		; loop var
-;trknum	=	$04		; loop var
+;;;run time
+trkcnt	=	$00		; track counter
+segcnt	=	$01		; loop var
+buffer	=	$02		; MSB of RWTS buffer
+secnum	=	$03		; loop var
+trknum	=	$04		; loop var
 
 
 start:
@@ -63,7 +64,7 @@ trkloop:
 	lda	trkcnt
 	bne	fulltrack
 	lda	lastsector
-	jmp	subtrack
+	bpl	subtrack
 fulltrack:
 	lda	#$F
 subtrack:
@@ -114,13 +115,14 @@ loadpage:
 	.org	*+1
 nextjump:
 	.org	*+2
-trkcnt:
-	.org	*+1
-segcnt:
-	.org	*+1
-buffer:
-	.org	*+1
-secnum:
-	.org	*+1
-trknum:
-	.org	*+1
+;;; used for debug
+;trkcnt:
+;	.org	*+1
+;segcnt:
+;	.org	*+1
+;buffer:
+;	.org	*+1
+;secnum:
+;	.org	*+1
+;trknum:
+;	.org	*+1

@@ -37,7 +37,7 @@ else
 	exit 1
 fi
 
-SUM=f27ea2a4fcc7c85ac25c3eacba24e958
+SUM=1e6d9243c1dd78e6cb289aafaf5437a1
 
 rm -f ${BIN}.dsk
 echo
