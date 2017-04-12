@@ -1,18 +1,25 @@
-;diskload2.s
+;loader.s
+;
+; moves itself to hire memory,
+; then reads binary from disk using params at end,
+; then jumps to binary
+;
 
-; apple vectors
+; apple params/vectors
 
 warm	=	$FF69		; back to monitor
 bell	=	$FBDD		; ding
+preg	=	$48		; mon p reg
+
+; dos params/vectors
+
+rwtsprm	=	$B7E8		; looked at dos 3.3 disk, not using $3E3 to find
+rwts	=	$B7B5		; rwts jsr
 
 ; vars
 
-lopage	=	$0800
-;hipage	=	$B500
-hipage	=	$B600
-rwtsprm	=	$B7E8		; looked at dos 3.3 disk, not using $3E3 to find
-rwts	=	$B7B5
-preg	=	$48		; mon p reg
+lopage	=	$800
+hipage	=	$B600		; overwrite track 0/sector 0, not needed any more?
 ;;;run time
 trkcnt	=	$00		; track counter
 segcnt	=	$01		; loop var
@@ -62,9 +69,9 @@ trkloop:
 	sta	rwtsprm,y	; write it to RWTS
 
 ;;;begin sector loop (16), backwards is faster, much faster
-	lda	trkcnt
-	bne	fulltrack
-	lda	lastsector
+	lda	trkcnt		; check if last track
+	bne	fulltrack	; if not then full track
+	lda	lastsector	; if so, get last sector number
 	bpl	subtrack
 fulltrack:
 	lda	#$F
@@ -77,7 +84,7 @@ secloop:
 
 	lda	buffer		; buffer MSB
 	clc
-	adc	secnum
+	adc	secnum		; compute page load address
 	ldy	#9		; offset in RWTS
 	sta	rwtsprm,y	; write it to RWTS
 
@@ -103,7 +110,7 @@ secloop:
 ;;;end track loop
 
 done:
-	jmp	(nextjump)
+	jmp	(nextjump)	; down with load, run it
 
 diskerror:
 	jmp	warm
