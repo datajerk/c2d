@@ -8,7 +8,8 @@ bell	=	$FBDD		; ding
 ; vars
 
 lopage	=	$0800
-hipage	=	$B500
+;hipage	=	$B500
+hipage	=	$B600
 rwtsprm	=	$B7E8		; looked at dos 3.3 disk, not using $3E3 to find
 rwts	=	$B7B5
 preg	=	$48		; mon p reg
