@@ -69,77 +69,78 @@ int main(int argc, char **argv)
 	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0;
 	int loaderstart, loader = 0, loadersize = 0, textpagesize = 0;
 	struct stat st;
-	char *filetypes[] = {"BINARY","MONITOR"};
-	char *ext, filename[256], load_address[10], *textpage=NULL;
+	char *filetypes[] = { "BINARY", "MONITOR" };
+	char *ext, filename[256], load_address[10], *textpage = NULL;
 
 	opterr = 1;
-	while((c = getopt(argc, argv, "t:vmh?s:")) != -1)
-		switch(c) {
-			case 't':
-				loader=1;
-				textpage=optarg;
-				break;
-			case 'm':
-				warm = 1;
-				break;
-			case 'v':		// version
-				fprintf(stderr,"\n%s\n\n",VERSION);
-				return 1;
-				break;
-			case 's':       // override rate for -1/-2 only
-				warm = 0;
-				start = (int)strtol(optarg, (char **)NULL, 16); // todo: input check
-				break;
-			case 'h':		// help
-			case '?':
-				usage();
-				return 1;
+	while ((c = getopt(argc, argv, "t:vmh?s:")) != -1)
+		switch (c) {
+		case 't':
+			loader = 1;
+			textpage = optarg;
+			break;
+		case 'm':
+			warm = 1;
+			break;
+		case 'v':	// version
+			fprintf(stderr, "\n%s\n\n", VERSION);
+			return 1;
+			break;
+		case 's':	// override rate for -1/-2 only
+			warm = 0;
+			start = (int) strtol(optarg, (char **) NULL, 16);	// todo: input check
+			break;
+		case 'h':	// help
+		case '?':
+			usage();
+			return 1;
 		}
 
-	if(argc - optind < 2) {
+	if (argc - optind < 2) {
 		usage();
 		return 1;
 	}
 
-	fprintf(stderr,"\n");
+	fprintf(stderr, "\n");
 
-	inputtype=BINARY;
+	inputtype = BINARY;
 
-	k=0;
-	for(j=0;j<strlen(INFILE);j++) {
-		if(INFILE[j] == ',')
+	k = 0;
+	for (j = 0; j < strlen(INFILE); j++) {
+		if (INFILE[j] == ',')
 			break;
-		filename[k++]=INFILE[j];
+		filename[k++] = INFILE[j];
 	}
 	filename[k] = '\0';
 
-	k=0;j++;
-	for(;j<strlen(INFILE);j++)
-		load_address[k++]=INFILE[j];
+	k = 0;
+	j++;
+	for (; j < strlen(INFILE); j++)
+		load_address[k++] = INFILE[j];
 	load_address[k] = '\0';
-	if(k == 0)
+	if (k == 0)
 		loadaddress = -1;
 	else
-		loadaddress = (int)strtol(load_address, (char **)NULL, 16); // todo: input check
+		loadaddress = (int) strtol(load_address, (char **) NULL, 16);	// todo: input check
 
-	if((ext = getext(filename)) != NULL)
-		if(strcmp(ext,"mon") == 0 || strcmp(ext,"MON") == 0)
+	if ((ext = getext(filename)) != NULL)
+		if (strcmp(ext, "mon") == 0 || strcmp(ext, "MON") == 0)
 			inputtype = MONITOR;
 
 	if ((ifp = fopen(filename, "rb")) == NULL) {
-		fprintf(stderr,"Cannot read: %s\n\n",filename);
+		fprintf(stderr, "Cannot read: %s\n\n", filename);
 		return 1;
 	}
 
-	fprintf(stderr,"Reading %s, type %s, load address: $",filename,filetypes[inputtype]);
+	fprintf(stderr, "Reading %s, type %s, load address: $", filename, filetypes[inputtype]);
 
-	if(inputtype == BINARY) {
+	if (inputtype == BINARY) {
 		unsigned char b;
 
-		stat(filename,&st);
+		stat(filename, &st);
 		filesize = st.st_size;
 
-		if(loadaddress == - 1) {
+		if (loadaddress == -1) {
 			fread(&b, 1, 1, ifp);
 			loadaddress = b;
 			fread(&b, 1, 1, ifp);
@@ -149,13 +150,11 @@ int main(int argc, char **argv)
 			fread(&b, 1, 1, ifp);
 			filesize |= b << 8;
 		}
-
 		//check for errors
-		fread(&blank.track[1+loader].sector[0].byte[loadaddress & 0xFF], filesize, 1, ifp);
+		fread(&blank.track[1 + loader].sector[0].byte[loadaddress & 0xFF], filesize, 1, ifp);
 	}
-
 	// todo: lots of input checking 
-	if(inputtype == MONITOR) {
+	if (inputtype == MONITOR) {
 		int byte, naddr;
 		char addrs[8], s;
 		unsigned char *p = NULL;
@@ -163,13 +162,13 @@ int main(int argc, char **argv)
 		loadaddress = -1;
 		filesize = 0;
 
-		while(fscanf(ifp,"%s ",addrs) != EOF) {
-			naddr = (int)strtol(addrs, (char **)NULL, 16);
-			if(loadaddress == -1) {
+		while (fscanf(ifp, "%s ", addrs) != EOF) {
+			naddr = (int) strtol(addrs, (char **) NULL, 16);
+			if (loadaddress == -1) {
 				loadaddress = naddr;
-				p = &blank.track[1+loader].sector[0].byte[loadaddress & 0xFF];
+				p = &blank.track[1 + loader].sector[0].byte[loadaddress & 0xFF];
 			}
-	
+
 			while (fscanf(ifp, "%x%c", &byte, &s) != EOF) {
 				*p++ = byte;
 				filesize++;
@@ -182,100 +181,96 @@ int main(int argc, char **argv)
 
 	fclose(ifp);
 
-	fprintf(stderr,"%04X, length: %d\n",loadaddress,filesize);
-	fprintf(stderr,"\n");
+	fprintf(stderr, "%04X, length: %d\n", loadaddress, filesize);
+	fprintf(stderr, "\n");
 
-	if(!start)
+	if (!start)
 		start = loadaddress;
-	if(warm)
+	if (warm)
 		start = 0xFF69;
 
-	if(!loader) {
+	if (!loader) {
 		blank.track[0].sector[1].byte[0xE0] = ceil((filesize + (loadaddress & 0xFF)) / 256.0);
 		blank.track[0].sector[1].byte[0xE7] = ((loadaddress + filesize - 1) >> 8) + 1;
-		blank.track[0].sector[1].byte[0x15] = ceil((filesize + (loadaddress & 0xFF))/ 4096.0);
-		blank.track[0].sector[1].byte[0x1A] = ceil((filesize + (loadaddress & 0xFF))/ 256.0) - 16*(ceil((filesize + (loadaddress & 0xFF)) / 4096.0) - 1) - 1;
+		blank.track[0].sector[1].byte[0x15] = ceil((filesize + (loadaddress & 0xFF)) / 4096.0);
+		blank.track[0].sector[1].byte[0x1A] = ceil((filesize + (loadaddress & 0xFF)) / 256.0) - 16 * (ceil((filesize + (loadaddress & 0xFF)) / 4096.0) - 1) - 1;
 
-		fprintf(stderr,"Number of sectors:    %d\n",(int)ceil((filesize + (loadaddress & 0xFF)) / 256.0));
-		fprintf(stderr,"Memory page range:    $%02X - $%02X\n",loadaddress >> 8,(loadaddress + filesize - 1) >> 8);
+		fprintf(stderr, "Number of sectors:    %d\n", (int) ceil((filesize + (loadaddress & 0xFF)) / 256.0));
+		fprintf(stderr, "Memory page range:    $%02X - $%02X\n", loadaddress >> 8, (loadaddress + filesize - 1) >> 8);
 
 		blank.track[0].sector[1].byte[0x3B] = 0x4C;
 		blank.track[0].sector[1].byte[0x3C] = start & 0xFF;
 		blank.track[0].sector[1].byte[0x3D] = start >> 8;
 
-		fprintf(stderr,"After boot, jump to:  $%04X\n\n",start);
+		fprintf(stderr, "After boot, jump to:  $%04X\n\n", start);
 
-		fprintf(stderr,"Writing %s to T:01/S:00 - T:%02d/S:%02d on %s\n\n",filename,blank.track[0].sector[1].byte[0x15],blank.track[0].sector[1].byte[0x1A],OUTFILE);
-	}
-	else {
+		fprintf(stderr, "Writing %s to T:01/S:00 - T:%02d/S:%02d on %s\n\n", filename, blank.track[0].sector[1].byte[0x15], blank.track[0].sector[1].byte[0x1A], OUTFILE);
+	} else {
 		if ((ifp = fopen(textpage, "rb")) == NULL) {
-			fprintf(stderr,"Cannot read: %s\n\n",textpage);
+			fprintf(stderr, "Cannot read: %s\n\n", textpage);
 			return 1;
 		}
 
-		stat(textpage,&st);
+		stat(textpage, &st);
 		textpagesize = st.st_size;
 
-		if(textpagesize != 1024) {
-			fprintf(stderr,"textpage %s size %d != 1024\n\n",textpage,textpagesize);
+		if (textpagesize != 1024) {
+			fprintf(stderr, "textpage %s size %d != 1024\n\n", textpage, textpagesize);
 			return 1;
 		}
 
 		fread(&blank.track[1].sector[0].byte[0], textpagesize, 1, ifp);
 		fclose(ifp);
 
-		if((loadersize = sizeof(loadercode)) > 256) {
-			fprintf(stderr,"Loader code size %d > 256\n\n",loadersize);
+		if ((loadersize = sizeof(loadercode)) > 256) {
+			fprintf(stderr, "Loader code size %d > 256\n\n", loadersize);
 			return 1;
 		}
 
-		for(i=0;i<loadersize;i++)
-			blank.track[1].sector[4].byte[i]=loadercode[i];
+		for (i = 0; i < loadersize; i++)
+			blank.track[1].sector[4].byte[i] = loadercode[i];
 
 		// loader args
 		// lasttrack
-		blank.track[1].sector[4].byte[loadersize]=1 + (int)ceil(filesize / 4096.0);
-		// lastsector (unused)
-		blank.track[1].sector[4].byte[loadersize+1]= ceil((filesize % 4096) / 256.0) - 1;
+		blank.track[1].sector[4].byte[loadersize] = 1 + (int) ceil(filesize / 4096.0);
+		// lastsector
+		blank.track[1].sector[4].byte[loadersize + 1] = ceil((filesize % 4096) / 256.0) - 1;
 		// loadpage
-		blank.track[1].sector[4].byte[loadersize+2]= loadaddress >> 8;
+		blank.track[1].sector[4].byte[loadersize + 2] = loadaddress >> 8;
 		// program start LSB
-		blank.track[1].sector[4].byte[loadersize+3]= start & 0xFF;
+		blank.track[1].sector[4].byte[loadersize + 3] = start & 0xFF;
 		// program start MSB
-		blank.track[1].sector[4].byte[loadersize+4]= start >> 8;
+		blank.track[1].sector[4].byte[loadersize + 4] = start >> 8;
 
-		loaderstart=0x400;
-		loadersize += (1024 + 5); // textpage + loader + loader args
+		loaderstart = 0x400;
+		loadersize += (1024 + 5);	// textpage + loader + loader args
 
 		blank.track[0].sector[1].byte[0xE0] = ceil((loadersize + (loaderstart & 0xFF)) / 256.0);
 		blank.track[0].sector[1].byte[0xE7] = ((loaderstart + loadersize - 1) >> 8) + 1;
-		blank.track[0].sector[1].byte[0x15] = ceil((loadersize + (loaderstart & 0xFF))/ 4096.0);
-		blank.track[0].sector[1].byte[0x1A] = ceil((loadersize + (loaderstart & 0xFF))/ 256.0) - 16*(ceil((loadersize + (loaderstart & 0xFF)) / 4096.0) - 1) - 1;
+		blank.track[0].sector[1].byte[0x15] = ceil((loadersize + (loaderstart & 0xFF)) / 4096.0);
+		blank.track[0].sector[1].byte[0x1A] = ceil((loadersize + (loaderstart & 0xFF)) / 256.0) - 16 * (ceil((loadersize + (loaderstart & 0xFF)) / 4096.0) - 1) - 1;
 
-		fprintf(stderr,"Loader number of sectors:    %d\n",(int)ceil((loadersize + (loaderstart & 0xFF)) / 256.0));
-		fprintf(stderr,"Loader memory page range:    $%02X - $%02X\n",loaderstart >> 8,(loaderstart + loadersize - 1) >> 8);
-		fprintf(stderr,"Binary Number of sectors:    %d\n",(int)ceil((filesize + (loadaddress & 0xFF)) / 256.0));
-		fprintf(stderr,"Binary Memory page range:    $%02X - $%02X\n",loadaddress >> 8,(loadaddress + filesize - 1) >> 8);
+		fprintf(stderr, "Loader number of sectors:    %d\n", (int) ceil((loadersize + (loaderstart & 0xFF)) / 256.0));
+		fprintf(stderr, "Loader memory page range:    $%02X - $%02X\n", loaderstart >> 8, (loaderstart + loadersize - 1) >> 8);
+		fprintf(stderr, "Binary Number of sectors:    %d\n", (int) ceil((filesize + (loadaddress & 0xFF)) / 256.0));
+		fprintf(stderr, "Binary Memory page range:    $%02X - $%02X\n", loadaddress >> 8, (loadaddress + filesize - 1) >> 8);
 
 		loaderstart = 0x800;
-		//if(warm)
-		//	loaderstart = 0xFF69;
 
 		blank.track[0].sector[1].byte[0x3B] = 0x4C;
 		blank.track[0].sector[1].byte[0x3C] = loaderstart & 0xFF;
 		blank.track[0].sector[1].byte[0x3D] = loaderstart >> 8;
 
-		fprintf(stderr,"After boot, jump to:         $%04X\n",loaderstart);
-		fprintf(stderr,"After loader, jump to:       $%04X\n",start);
-		fprintf(stderr,"\n");
-		fprintf(stderr,"Writing %s to T:02/S:00 - T:%02d/S:%02d on %s\n\n",filename,blank.track[1].sector[4].byte[sizeof(loadercode)],blank.track[1].sector[4].byte[sizeof(loadercode)+1],OUTFILE);
+		fprintf(stderr, "After boot, jump to:         $%04X\n", loaderstart);
+		fprintf(stderr, "After loader, jump to:       $%04X\n", start);
+		fprintf(stderr, "\n");
+		fprintf(stderr, "Writing %s to T:02/S:00 - T:%02d/S:%02d on %s\n\n", filename, blank.track[1].sector[4].byte[sizeof(loadercode)], blank.track[1].sector[4].byte[sizeof(loadercode) + 1], OUTFILE);
 	}
 
 	if ((ofp = fopen(OUTFILE, "wb")) == NULL) {
-		fprintf(stderr,"Cannot write: %s\n\n",OUTFILE);
+		fprintf(stderr, "Cannot write: %s\n\n", OUTFILE);
 		return 1;
 	}
-
 	// check for errors
 	fwrite(&blank, 143360, 1, ofp);
 
@@ -289,28 +284,26 @@ char *getext(char *filename)
 	char stack[256], *rval;
 	int i, sp = 0;
 
-	for(i=strlen(filename)-1;i>=0;i--) {
-		if(filename[i] == '.')
+	for (i = strlen(filename) - 1; i >= 0; i--) {
+		if (filename[i] == '.')
 			break;
 		stack[sp++] = filename[i];
 	}
 	stack[sp] = '\0';
 
-	if(sp == strlen(filename) || sp == 0)
-		return(NULL);
+	if (sp == strlen(filename) || sp == 0)
+		return (NULL);
 
-	if((rval = (char *)malloc(sp * sizeof(char))) == NULL)
-		; //do error code
+	if ((rval = (char *) malloc(sp * sizeof(char))) == NULL);	//do error code
 
 	rval[sp] = '\0';
-	for(i=0;i<sp+i;i++)
+	for (i = 0; i < sp + i; i++)
 		rval[i] = stack[--sp];
 
-	return(rval);
+	return (rval);
 }
 
 void usage()
 {
-	fprintf(stderr,"%s",usagetext);
+	fprintf(stderr, "%s", usagetext);
 }
-
