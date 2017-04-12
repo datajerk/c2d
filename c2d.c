@@ -28,19 +28,8 @@ Features:
 		o  32-bit/64-bit x86 OS/X.
 		o  32-bit x86 Windows/MinGW.
 
-Compile:
-	OS/X:
-		gcc -Wall -O -o c2d c2d.c
-	Linux:
-		gcc -Wall -O -o c2d c2d.c -lm
-	Windows/Cygwin:
-		gcc -Wall -O -o c2d c2d.c
-	Windows/MinGW:
-		PATH=C:\MinGW\bin;%PATH%
-		gcc -Wall -O -static -o c2d c2d.c
-
 Bugs:
-	*  Probably
+	*  Yes (input checking)
 
 */
 
@@ -75,18 +64,18 @@ int main(int argc, char **argv)
 	opterr = 1;
 	while ((c = getopt(argc, argv, "t:vmh?s:")) != -1)
 		switch (c) {
-		case 't':
+		case 't':	// load a splash page while loading binary
 			loader = 1;
 			textpage = optarg;
 			break;
-		case 'm':
+		case 'm':	// boot to monitor
 			warm = 1;
 			break;
 		case 'v':	// version
 			fprintf(stderr, "\n%s\n\n", VERSION);
 			return 1;
 			break;
-		case 's':	// override rate for -1/-2 only
+		case 's':	// start here instead of load address
 			warm = 0;
 			start = (int) strtol(optarg, (char **) NULL, 16);	// todo: input check
 			break;
