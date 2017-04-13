@@ -241,6 +241,7 @@ int main(int argc, char **argv)
 
 		fprintf(stderr, "Loader number of sectors:    %d\n", (int) ceil((loadersize + (loaderstart & 0xFF)) / 256.0));
 		fprintf(stderr, "Loader memory page range:    $%02X - $%02X\n", loaderstart >> 8, (loaderstart + loadersize - 1) >> 8);
+		fprintf(stderr, "After loader, jump to:       $%04X\n", start);
 		fprintf(stderr, "Binary Number of sectors:    %d\n", (int) ceil((filesize + (loadaddress & 0xFF)) / 256.0));
 		fprintf(stderr, "Binary Memory page range:    $%02X - $%02X\n", loadaddress >> 8, (loadaddress + filesize - 1) >> 8);
 
@@ -251,7 +252,6 @@ int main(int argc, char **argv)
 		blank.track[0].sector[1].byte[0x3D] = loaderstart >> 8;
 
 		fprintf(stderr, "After boot, jump to:         $%04X\n", loaderstart);
-		fprintf(stderr, "After loader, jump to:       $%04X\n", start);
 		fprintf(stderr, "\n");
 		fprintf(stderr, "Writing %s to T:02/S:00 - T:%02d/S:%02d on %s\n\n", filename, blank.track[1].sector[4].byte[sizeof(loadercode)], blank.track[1].sector[4].byte[sizeof(loadercode) + 1], OUTFILE);
 	}
