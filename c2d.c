@@ -142,6 +142,7 @@ int main(int argc, char **argv)
 		//check for errors
 		fread(&blank.track[1 + loader].sector[0].byte[loadaddress & 0xFF], filesize, 1, ifp);
 	}
+
 	// todo: lots of input checking 
 	if (inputtype == MONITOR) {
 		int byte, naddr;

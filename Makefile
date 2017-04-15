@@ -29,6 +29,6 @@ clean:
 gameserverclient.text: Makefile
 	figlet -c -w 40 -f slant "Game Server Online Client" >$@
 
-test: gameserverclient gameserverclient.text dist
+test: gameserverclient gameserverclient.mon gameserverclient.text dist
 	./test.sh
 
