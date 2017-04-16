@@ -37,12 +37,14 @@ OS/X, Linux, Cygwin:
 
 	gcc -Wall -Wno-missing-braces -I. -O3 -o c2d c2d.c -lm
 	gcc -Wall -O3 -o bin/text2page text2page.c -lm
+	gcc -Wall -O3 -o bin/page2text page2text.c -lm
 
 Windows/MinGW:
 
 	PATH=C:\MinGW\bin;%PATH%
 	gcc -Wall -Wno-missing-braces -static -I. -O3 -o c2d c2d.c -lm
 	gcc -Wall -O3 --static -o bin/text2page text2page.c -lm
+	gcc -Wall -O3 --static -o bin/page2text page2text.c -lm
 
 
 ### c2d Usage/Examples
@@ -83,6 +85,14 @@ Input is expected to be ASCII text.  Only the first 40 characters/line and the f
 
 ```
 text2page <gameserverclient.text >gameserverclient.textpage
+```
+
+### page2text Example
+
+Input is expected to be an Apple II binary from $400-$7FF.  Exactly 1024 bytes.  See `gameserverclient.textpage` example.
+
+```
+page2text <gameserverclient.textpage >gameserverclient.text
 ```
 
 ### Bugs
