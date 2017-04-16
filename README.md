@@ -81,7 +81,7 @@ Examples:
 
 ### text2page Example
 
-Input is expected to be ASCII text.  Only the first 40 characters/line and the first 24 lines are read.  See `gameserverclient.text` example.
+Input is expected to be ASCII text (LF or CRLF line terminated).  Only the first 40 characters/line and the first 24 lines are read.  See `gameserverclient.text` example.
 
 ```
 text2page <gameserverclient.text >gameserverclient.textpage
@@ -90,7 +90,7 @@ text2page <gameserverclient.text >gameserverclient.textpage
 ### page2text Example
 
 Input is expected to be an Apple II binary from $400-$7FF.  Exactly 1024 bytes.  See `gameserverclient.textpage` example.
-> Text lines are newline (LF) terminated.  Windows users will need to convert LF to CRLF.
+> Text lines are newline (LF) terminated.  Windows users may need to convert LF to CRLF (editor dependent).
 
 ```
 page2text <gameserverclient.textpage >gameserverclient.text
