@@ -33,15 +33,15 @@ int main()
 	while((c = getchar()) != EOF) {
 		if(c == '\r') // windows trash
 			continue;
-		if(column > 39) // user didn't read the docs
-			continue;
-		if(line > 23) // ditto
-			break;
 		if(c == '\n') { // end of line
 			column=0;
 			line++;
 			continue;
 		}
+		if(column > 39) // user didn't read the docs
+			continue;
+		if(line > 23) // ditto
+			break;
 
 		screen[linemap[line]][column] = c | highbit;
 		column++;

@@ -2,6 +2,7 @@
 
 set -e
 
+PATH=bin:$PATH
 BIN=gameserverclient
 ADDR=800
 SUM=898ebb103fdda6fffe62394c1b915d1d
@@ -10,8 +11,8 @@ rm -f ${BIN}.dsk
 echo
 echo "Testing OS/X c2d..."
 echo
-echo "bin/c2d ${BIN},${ADDR} ${BIN}.dsk"
-bin/c2d ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
+echo "c2d ${BIN},${ADDR} ${BIN}.dsk"
+c2d ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
 CHECK=$(md5sum ${BIN}.dsk | awk '{print $1}')
 if [ "$CHECK" = "$SUM" ]
 then
@@ -43,10 +44,10 @@ rm -f ${BIN}.dsk
 echo
 echo "Testing OS/X c2d textpage..."
 echo
-echo "bin/text2page <${BIN}.text >${BIN}.textpage"
-bin/text2page <${BIN}.text >${BIN}.textpage
-echo "bin/c2d -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk"
-bin/c2d -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
+echo "text2page <${BIN}.text | page2text | text2page >${BIN}.textpage"
+text2page <${BIN}.text | page2text | text2page >${BIN}.textpage
+echo "c2d -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk"
+c2d -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
 CHECK=$(md5sum ${BIN}.dsk | awk '{print $1}')
 if [ "$CHECK" = "$SUM" ]
 then
@@ -83,8 +84,8 @@ rm -f ${BIN}.dsk
 echo
 echo "Testing OS/X c2d..."
 echo
-echo "bin/c2d ${MON} ${BIN}.dsk"
-bin/c2d ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
+echo "c2d ${MON} ${BIN}.dsk"
+c2d ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
 CHECK=$(md5sum ${BIN}.dsk | awk '{print $1}')
 if [ "$CHECK" = "$SUM" ]
 then
@@ -116,10 +117,10 @@ rm -f ${BIN}.dsk
 echo
 echo "Testing OS/X c2d textpage..."
 echo
-echo "bin/text2page <${BIN}.text >${BIN}.textpage"
-bin/text2page <${BIN}.text >${BIN}.textpage
-echo "bin/c2d -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk"
-bin/c2d -t ${BIN}.textpage ${MON} ${BIN}.dsk 2>&1 | sed 's/^/    /'
+echo "text2page <${BIN}.text >${BIN}.textpage"
+text2page <${BIN}.text >${BIN}.textpage
+echo "c2d -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk"
+c2d -t ${BIN}.textpage ${MON} ${BIN}.dsk 2>&1 | sed 's/^/    /'
 CHECK=$(md5sum ${BIN}.dsk | awk '{print $1}')
 if [ "$CHECK" = "$SUM" ]
 then
