@@ -14,20 +14,13 @@ unsigned char holes[] = {
 int main()
 {
 	char c, highbit = 0x80;
-	int i, j, k, column = 0, line = 0, linemap[24];
+	int i, j, k, column = 0, line = 0;
 	unsigned char screen[24][40];
-
-	// build table
-	for (i = 0; i < 8; i++) {
-		linemap[0 + i] = 0 + 3 * i;
-		linemap[8 + i] = 1 + 3 * i;
-		linemap[16 + i] = 2 + 3 * i;
-	}
 
 	// clear screen
 	for (i = 0; i < 24; i++)
 		for (j = 0; j < 40; j++)
-			screen[linemap[i]][j] = ' ' | highbit;
+			screen[i][j] = ' ' | highbit;
 
 	while ((c = getchar()) != EOF) {
 		if (c == '\r')			// windows trash
@@ -42,7 +35,7 @@ int main()
 		if (line > 23)			// ditto
 			break;
 
-		screen[linemap[line]][column++] = c | highbit;
+		screen[3 * (line % 8) + line / 8][column++] = c | highbit;
 	}
 
 	// dump to stdout
