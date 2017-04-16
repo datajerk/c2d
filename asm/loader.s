@@ -1,6 +1,6 @@
 ;loader.s
 ;
-; moves itself to hire memory,
+; moves itself to another page memory,
 ; then reads binary from disk using params at end,
 ; then jumps to binary
 ;
@@ -32,7 +32,7 @@ trknum	=	$04		; loop var
 start:
         .org	stage1
 
-	ldx	#0		; move code to hi memory
+	ldx	#0		; move code to stage2
 move:
 	lda	moved,x
 	sta	loader,x
