@@ -17,7 +17,7 @@ int main()
 	int i, j, k, line = 0;
 	unsigned char screen[24][40];
 
-	// clear screen
+	// clear screen (just in case < 40x24)
 	for (i = 0; i < 24; i++)
 		for (j = 0; j < 40; j++)
 			screen[i][j] = ' ' | highbit;
