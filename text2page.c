@@ -18,10 +18,10 @@ int main()
 	unsigned char screen[24][40];
 
 	// build table
-	for (j = 0, i = 0; i < 8; i++, j++) {
-		linemap[0 + j] = 0 + 3 * j;
-		linemap[8 + j] = 1 + 3 * j;
-		linemap[16 + j] = 2 + 3 * j;
+	for (i = 0; i < 8; i++) {
+		linemap[0 + i] = 0 + 3 * i;
+		linemap[8 + i] = 1 + 3 * i;
+		linemap[16 + i] = 2 + 3 * i;
 	}
 
 	// clear screen
@@ -42,8 +42,7 @@ int main()
 		if (line > 23)			// ditto
 			break;
 
-		screen[linemap[line]][column] = c | highbit;
-		column++;
+		screen[linemap[line]][column++] = c | highbit;
 	}
 
 	// dump to stdout

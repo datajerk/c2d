@@ -6,10 +6,10 @@ int main()
 	char screen[24][40];
 
 	// build table
-	for (j = 0, i = 0; i < 8; i++, j++) {
-		linemap[0 + 3 * j] = j;
-		linemap[1 + 3 * j] = j + 8;
-		linemap[2 + 3 * j] = j + 16;
+	for (i = 0; i < 8; i++) {
+		linemap[0 + 3 * i] = i;
+		linemap[1 + 3 * i] = i + 8;
+		linemap[2 + 3 * i] = i + 16;
 	}
 
 	// clear screen
