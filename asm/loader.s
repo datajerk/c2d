@@ -18,8 +18,9 @@ rwts	=	$B7B5		; rwts jsr
 
 ; vars
 
-lopage	=	$800
-hipage	=	$B600		; overwrite track 0/sector 0, not needed any more?
+stage1	=	$800
+;stage2	=	$B600		; overwrite track 0/sector 0, not needed any more?
+stage2	=	$300		; $300 looks open
 ;;;run time
 trkcnt	=	$00		; track counter
 segcnt	=	$01		; loop var
@@ -29,18 +30,19 @@ trknum	=	$04		; loop var
 
 
 start:
-        .org	lopage
+        .org	stage1
 
 	ldx	#0		; move code to hi memory
 move:
 	lda	moved,x
 	sta	loader,x
 	inx
-	bne	move		; move 256 bytes
+	;bne	move		; move 256 bytes
+	bpl	move		; move 128 bytes
 	jmp	loader
 
 moved:
-	.org	hipage
+	.org	stage2
 
 loader:
 	lda	#1		; read(1)/write(2) command

@@ -37,7 +37,7 @@ else
 	exit 1
 fi
 
-SUM=57557acfd26f4c1e12ced4cf125bc97f
+SUM=d70651dcc97e854aad3b4164948fec4a
 
 rm -f ${BIN}.dsk
 echo
@@ -110,7 +110,7 @@ else
 	exit 1
 fi
 
-SUM=57557acfd26f4c1e12ced4cf125bc97f
+SUM=d70651dcc97e854aad3b4164948fec4a
 
 rm -f ${BIN}.dsk
 echo
