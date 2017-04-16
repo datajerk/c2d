@@ -3,7 +3,7 @@
 int main()
 {
 	int i, j, k, linemap[24];
-	unsigned char screen[24][40];
+	char screen[24][40];
 
 	// build table
 	for(j=0,i=0;i<8;i++) {
