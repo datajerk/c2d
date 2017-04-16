@@ -22,10 +22,7 @@ int main()
 	for(i=0;i<24;i++) {
 		for(j=0;j<40;j++) {
 			c = getchar();
-			if(++count > 1024) {
-				fprintf(stderr,"input size > 1024\n\n");
-				return 1;
-			}
+			count++;
 			screen[linemap[i]][j] = c & 0x7F;
 		}
 		if((i + 1) % 3 == 0)
