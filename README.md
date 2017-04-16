@@ -90,7 +90,7 @@ text2page <gameserverclient.text >gameserverclient.textpage
 ### page2text Example
 
 Input is expected to be an Apple II binary from $400-$7FF.  Exactly 1024 bytes.  See `gameserverclient.textpage` example.
-> Text lines are newline (LF) terminated.  Windows users may need to convert LF to CRLF (editor dependent).
+> Text output lines are newline (LF) terminated.  Windows users may need to convert LF to CRLF (editor dependent).
 
 ```
 page2text <gameserverclient.textpage >gameserverclient.text
