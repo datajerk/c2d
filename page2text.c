@@ -2,7 +2,7 @@
 
 int main()
 {
-	int i, j, k, mask = 0x7F;
+	int i, j, k, line, mask = 0x7F;
 	char screen[24][40];
 
 	// clear screen
@@ -11,9 +11,10 @@ int main()
 			screen[i][j] = ' ';
 
 	for (i = 0; i < 24; i++) {
+		line = 8 * (i % 3) + i / 3;
 		for (j = 0; j < 40; j++)
-			screen[8 * (i % 3) + i / 3][j] = getchar() & mask;
-		if ((i + 1) % 3 == 0)
+			screen[line][j] = getchar() & mask;
+		if (i % 3 == 2)
 			for (k = 0; k < 8; k++)
 				getchar();
 	}

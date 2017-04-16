@@ -14,7 +14,7 @@ unsigned char holes[] = {
 int main()
 {
 	char c, highbit = 0x80;
-	int i, j, k, column = 0, line = 0;
+	int i, j, k, line = 0;
 	unsigned char screen[24][40];
 
 	// clear screen
@@ -22,27 +22,29 @@ int main()
 		for (j = 0; j < 40; j++)
 			screen[i][j] = ' ' | highbit;
 
+	i = j = 0;
 	while ((c = getchar()) != EOF) {
 		if (c == '\r')			// windows trash
 			continue;
 		if (c == '\n') {		// end of line
-			column = 0;
-			line++;
+			j = 0;
+			i++;
+			line = 3 * (i % 8) + i / 8;
 			continue;
 		}
-		if (column > 39)		// user didn't read the docs
+		if (j > 39)				// user didn't read the docs
 			continue;
-		if (line > 23)			// ditto
+		if (i > 23)				// ditto
 			break;
 
-		screen[3 * (line % 8) + line / 8][column++] = c | highbit;
+		screen[line][j++] = c | highbit;
 	}
 
 	// dump to stdout
 	for (i = 0; i < 24; i++) {
 		for (j = 0; j < 40; j++)
 			putchar(screen[i][j]);
-		if ((i + 1) % 3 == 0)
+		if (i % 3 == 2)
 			for (k = 0; k < 8; k++)
 				putchar(holes[(i / 3) * 8 + k]);
 	}
