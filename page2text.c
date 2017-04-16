@@ -1,8 +1,10 @@
 #include <stdio.h>
 
+#define MASK 0x7F
+
 int main()
 {
-	int i, j, k, line, mask = 0x7F;
+	int i, j, k, line;
 	char screen[24][40];
 
 	// clear screen (just in case partial dump)
@@ -13,7 +15,7 @@ int main()
 	for (i = 0; i < 24; i++) {
 		line = 8 * (i % 3) + i / 3;
 		for (j = 0; j < 40; j++)
-			screen[line][j] = getchar() & mask;
+			screen[line][j] = getchar() & MASK;
 		if (i % 3 == 2)
 			for (k = 0; k < 8; k++)
 				getchar();

@@ -11,16 +11,19 @@ unsigned char holes[] = {
 	0xc6, 0xff, 0x00, 0x07, 0xff, 0xff, 0x00, 0x00
 };
 
+#define NORMAL 0x80
+#define BLINK 0x40
+
 int main()
 {
-	char c, highbit = 0x80;
+	char c;
 	int i, j, k, line = 0;
 	unsigned char screen[24][40];
 
 	// clear screen (just in case < 40x24)
 	for (i = 0; i < 24; i++)
 		for (j = 0; j < 40; j++)
-			screen[i][j] = ' ' | highbit;
+			screen[i][j] = ' ' | NORMAL;
 
 	i = j = 0;
 	while ((c = getchar()) != EOF) {
@@ -37,7 +40,7 @@ int main()
 		if (i > 23)				// ditto
 			break;
 
-		screen[line][j++] = c | highbit;
+		screen[line][j++] = c | NORMAL;
 	}
 
 	// dump to stdout
