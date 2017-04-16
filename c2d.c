@@ -1,6 +1,6 @@
 /*
 
-c2d, Code to Disk, Version 0.42, Sun Apr  9 03:16:22 UTC 2017
+c2d, Code to Disk, Version 0.43, Sun Apr 16 02:41:26 UTC 2017
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
@@ -42,7 +42,7 @@ Bugs:
 #include <sys/stat.h>
 #include "c2d.h"
 
-#define VERSION "Version 0.42"
+#define VERSION "Version 0.43"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
