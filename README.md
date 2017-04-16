@@ -14,26 +14,6 @@
 	*  32-bit x86 Windows/MinGW.
 
 
-### Distribution Files
-
-| Filename          | Description          |
-|-------------------|----------------------|
-| README.md         | This File            |
-| c2d.c             | Source File          |
-| c2d.h.0           | Source File          |
-| makeheader        | c2d.h build script   |
-| text2page.c       | Source File          |
-| Makefile          | c2d Makefile         |
-| asm/loader.s      | c2d loader source    |
-| asm/Makefile      | c2d loader Makefile  |
-| bin/c2d           | OS/X x86 Binary      |
-| bin/c2d.exe       | Windows Binary       |
-| bin/text2page     | OS/X x86 Binary      |
-| bin/text2page.exe | Windows Binary       |
-| gameserverclient* | Test Apple II Binary |
-| test.sh           | test script          |
-
-
 ### Download
 
 ```
