@@ -2,7 +2,6 @@
 
 int main()
 {
-	unsigned char c;
 	int i, j, k, linemap[24];
 	unsigned char screen[24][40];
 
@@ -20,13 +19,11 @@ int main()
 			screen[linemap[i]][j] = ' ';
 
 	for(i=0;i<24;i++) {
-		for(j=0;j<40;j++) {
-			c = getchar();
-			screen[linemap[i]][j] = c & 0x7F;
-		}
+		for(j=0;j<40;j++)
+			screen[linemap[i]][j] = getchar() & 0x7F;
 		if((i + 1) % 3 == 0)
 			for(k=0;k<8;k++)
-				c = getchar();
+				getchar();
 	}
 
 	// dump to stdout
