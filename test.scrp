@@ -1,0 +1,51 @@
+on run argv
+
+	set my_path to (system attribute "PWD") & "/"
+	set my_disk to item 1 of argv
+	set my_done1 to item 2 of argv
+	set my_done2 to item 3 of argv
+	set my_timeout1 to item 4 of argv
+	set my_timeout2 to item 5 of argv
+
+	tell application "Virtual ]["
+		activate
+		delay 1.5
+		-- Close all open machines
+		close every machine saving no
+		-- Create a new (AppleIIe)
+		set theMachine to (make new AppleIIe)
+		tell theMachine
+			-- Change to a color screen
+			-- set monochrome screen to false
+			set scanlines to true
+			set speaker volume to 0.25
+			insert my_path & my_disk into device "S6D1"
+			-- Now wait for the startup screen
+			-- delay 0.5
+
+			try
+				with timeout of my_timeout1 seconds
+					waiting until screen equals imagefile POSIX path of (my_path & my_done1)
+				end timeout
+			on error
+				return "ERROR: TIMEOUT: Virtual ][ screen != " & my_done1
+			end try
+
+			try
+				with timeout of my_timeout2 seconds
+					waiting until screen equals imagefile POSIX path of (my_path & my_done2)
+				end timeout
+			on error
+				return "ERROR: TIMEOUT: Virtual ][ screen != " & my_done2
+			end try
+
+			-- short test of image, not necessary, next 3 lines can be removed
+			-- delay 1
+
+		end tell
+		-- delay 1.5
+		close every machine saving no
+		quit
+	end tell
+end run
+

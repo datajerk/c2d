@@ -22,6 +22,25 @@ else
 	exit 1
 fi
 
+if ((EMU == 1))
+then
+	echo
+	echo -n "Emulator Test..."
+	if ! OUTPUT=$(osascript test.scrp gameserverclient.dsk gameserverclient.tiff gameserverclient.tiff 15 15)
+	then
+		echo FAILED
+		exit 1
+	fi
+	if echo $OUTPUT | grep ERROR >/dev/null 2>&1
+	then
+		echo FAILED
+		echo $OUTPUT
+		echo
+		exit 1
+	fi
+	echo PASSED
+fi
+
 rm -f ${BIN}.dsk
 echo
 echo "Testing Windows c2d..."
@@ -55,6 +74,25 @@ then
 else
 	echo "FAILED $CHECK != $SUM (expect)"
 	exit 1
+fi
+
+if ((EMU == 1))
+then
+	echo
+	echo -n "Emulator Test..."
+	if ! OUTPUT=$(osascript test.scrp gameserverclient.dsk gameserverclientsplash.tiff gameserverclient.tiff 15 15)
+	then
+		echo FAILED
+		exit 1
+	fi
+	if echo $OUTPUT | grep ERROR >/dev/null 2>&1
+	then
+		echo FAILED
+		echo $OUTPUT
+		echo
+		exit 1
+	fi
+	echo PASSED
 fi
 
 rm -f ${BIN}.dsk

@@ -1,4 +1,5 @@
 
+EMUTEST = 1
 WIN32GCC = /usr/local/gcc-4.8.0-qt-4.8.4-for-mingw32/win32-gcc/bin/i586-mingw32-gcc
 
 all: bin/c2d bin/text2page bin/page2text
@@ -36,5 +37,5 @@ gameserverclient.text: Makefile
 	figlet -c -w 40 -f slant "Game Server Online Client" >$@
 
 test: gameserverclient gameserverclient.mon gameserverclient.text dist
-	./test.sh
+	EMU=$(EMUTEST) ./test.sh
 
