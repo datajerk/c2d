@@ -9,7 +9,7 @@ on run argv
 
 	tell application "Virtual ]["
 		activate
-		delay 1.5
+		-- delay 1.5 -- not needed any more?
 		-- Close all open machines
 		close every machine saving no
 		-- Create a new (AppleIIe)
@@ -20,8 +20,6 @@ on run argv
 			set scanlines to true
 			set speaker volume to 0.25
 			insert my_path & my_disk into device "S6D1"
-			-- Now wait for the startup screen
-			-- delay 0.5
 
 			try
 				with timeout of my_timeout1 seconds
@@ -39,11 +37,8 @@ on run argv
 				return "ERROR: TIMEOUT: Virtual ][ screen != " & my_done2
 			end try
 
-			-- short test of image, not necessary, next 3 lines can be removed
-			-- delay 1
-
 		end tell
-		-- delay 1.5
+		delay 0.5
 		close every machine saving no
 		quit
 	end tell
