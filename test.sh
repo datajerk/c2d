@@ -18,7 +18,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo "FAILED $CHECK != $SUM (expect)"
+	echo "FAILED $CHECK != $SUM (expected)"
 	exit 1
 fi
 
@@ -53,7 +53,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo "FAILED $CHECK != $SUM (expect)"
+	echo "FAILED $CHECK != $SUM (expected)"
 	exit 1
 fi
 
@@ -72,7 +72,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo "FAILED $CHECK != $SUM (expect)"
+	echo "FAILED $CHECK != $SUM (expected)"
 	exit 1
 fi
 
@@ -109,7 +109,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo "FAILED $CHECK != $SUM (expect)"
+	echo "FAILED $CHECK != $SUM (expected)"
 	exit 1
 fi
 
@@ -129,7 +129,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo "FAILED $CHECK != $SUM (expect)"
+	echo "FAILED $CHECK != $SUM (expected)"
 	exit 1
 fi
 
@@ -145,7 +145,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo "FAILED $CHECK != $SUM (expect)"
+	echo "FAILED $CHECK != $SUM (expected)"
 	exit 1
 fi
 
@@ -164,7 +164,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo "FAILED $CHECK != $SUM (expect)"
+	echo "FAILED $CHECK != $SUM (expected)"
 	exit 1
 fi
 
@@ -182,7 +182,7 @@ if [ "$CHECK" = "$SUM" ]
 then
 	echo PASSED
 else
-	echo "FAILED $CHECK != $SUM (expect)"
+	echo "FAILED $CHECK != $SUM (expected)"
 	exit 1
 fi
 

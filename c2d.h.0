@@ -18,7 +18,7 @@ usage:  c2d [-vh?]\n\
         -h|? this help\n\
         -m jump to monitor after booting\n\
         -s XXXX jump to XXXX after booting\n\
-        -t filename where filename is a 1K $400-$7FF text page splash screen.\n\
+        -t filename, where filename is a 1K $400-$7FF text page splash screen.\n\
            The splash screen will display while the binary is loading.\n\
         -v print version number and exit\n\
 \n\
