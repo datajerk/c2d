@@ -9,6 +9,7 @@ on run argv
 
 	tell application "Virtual ]["
 		activate
+		-- may need delay for this error: execution error: Virtual ][ got an error: Connection is invalid. (-609)
 		-- delay 1.5 -- not needed any more?
 		-- Close all open machines
 		close every machine saving no
