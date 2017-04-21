@@ -5,7 +5,7 @@ set -e
 PATH=bin:$PATH
 BIN=gameserverclient
 ADDR=800
-SUM=145c0601314e41e76a82c7f3cf1c9a1c
+SUM=198bfc7dc8b17256c3c252998c26ce03
 
 rm -f ${BIN}.dsk
 echo
@@ -57,7 +57,7 @@ else
 	exit 1
 fi
 
-SUM=d025817b7eaeae01b0803bf0f2e08a1f
+SUM=c829f377a6a1040bebb68bd3365c522c
 
 rm -f ${BIN}.dsk
 echo
@@ -116,7 +116,7 @@ fi
 BIN=gameserverclient
 MON=gameserverclient.mon
 ADDR=800
-SUM=145c0601314e41e76a82c7f3cf1c9a1c
+SUM=198bfc7dc8b17256c3c252998c26ce03
 
 rm -f ${BIN}.dsk
 echo
@@ -149,7 +149,7 @@ else
 	exit 1
 fi
 
-SUM=d025817b7eaeae01b0803bf0f2e08a1f
+SUM=c829f377a6a1040bebb68bd3365c522c
 
 rm -f ${BIN}.dsk
 echo
