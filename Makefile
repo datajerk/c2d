@@ -42,10 +42,10 @@ gameserverclient.text: Makefile
 	text="CASSETTE PORT FTW! ---- ASCIIEXPRESS.NET"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
 	) | tail -24 >$@
 
-emutest: gameserverclient gameserverclient.mon gameserverclient.text dist
+fulltest: gameserverclient gameserverclient.mon gameserverclient.text dist
 	EMU=1 WIN=1 ./test.sh
 
-fulltest: gameserverclient gameserverclient.mon gameserverclient.text dist
+disttest: gameserverclient gameserverclient.mon gameserverclient.text dist
 	EMU=0 WIN=1 ./test.sh
 
 test: gameserverclient gameserverclient.mon gameserverclient.text all
