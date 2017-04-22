@@ -1,6 +1,6 @@
 /*
 
-c2d, Code to Disk, Version 0.51, Fri Apr 21 23:13:38 UTC 2017
+c2d, Code to Disk, Version 0.53
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
@@ -41,8 +41,9 @@ Bugs:
 #include <math.h>
 #include <sys/stat.h>
 #include "c2d.h"
+#include "holes.h"
 
-#define VERSION "Version 0.51"
+#define VERSION "Version 0.53"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
@@ -55,14 +56,14 @@ char *getext(char *filename);
 int main(int argc, char **argv)
 {
 	FILE *ifp, *ofp;
-	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0;
+	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0, unpatch = 0;
 	int loaderstart, loader = 0, loadersize = 0, textpagesize = 0;
 	struct stat st;
 	char *filetypes[] = { "BINARY", "MONITOR" };
 	char *ext, filename[256], load_address[10], *textpage = NULL;
 
 	opterr = 1;
-	while ((c = getopt(argc, argv, "t:vmh?s:")) != -1)
+	while ((c = getopt(argc, argv, "t:vmh?s:u")) != -1)
 		switch (c) {
 		case 't':	// load a splash page while loading binary
 			loader = 1;
@@ -78,6 +79,9 @@ int main(int argc, char **argv)
 		case 's':	// start here instead of load address
 			warm = 0;
 			start = (int) strtol(optarg, (char **) NULL, 16);	// todo: input check
+			break;
+		case 'u':
+			unpatch = 1;
 			break;
 		case 'h':	// help
 		case '?':
@@ -209,8 +213,24 @@ int main(int argc, char **argv)
 			return 1;
 		}
 
+		// check for errors
 		fread(&blank.track[1].sector[0].byte[0], textpagesize, 1, ifp);
 		fclose(ifp);
+
+		// patch holes
+		if(!unpatch)
+		{
+			uint64_t *p = (uint64_t *)&blank.track[1].sector[0].byte[0];	// set to start of splash page
+			uint64_t *h = (uint64_t *)&holes;								// holes are 64-bits
+			int i;
+
+			p -= 1;		// back up virtual hole
+
+			for(i = 0; i < 8; i++) {
+				p += 16;	// 3 lines x 40 columns + last hole / 8 (64-bit);
+				*p = *h++;	// copy screen hole data
+			}
+		}
 
 		if ((loadersize = sizeof(loadercode)) > 256) {
 			fprintf(stderr, "Loader code size %d > 256\n\n", loadersize);
@@ -233,7 +253,11 @@ int main(int argc, char **argv)
 		blank.track[1].sector[4].byte[loadersize + 4] = start >> 8;
 
 		loaderstart = 0x400;
-		loadersize += (1024 + 5);	// textpage + loader + loader args
+
+		// temp hack to effect the sound of the drive, i.e. to make consistent
+		// longer term put binary payload at end of loader
+		// loadersize += (1024 + 5);	// textpage + loader + loader args
+		loadersize = 4096;
 
 		blank.track[0].sector[1].byte[0xE0] = ceil((loadersize + (loaderstart & 0xFF)) / 256.0);
 		blank.track[0].sector[1].byte[0xE7] = ((loaderstart + loadersize - 1) >> 8) + 1;

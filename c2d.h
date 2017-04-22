@@ -13,13 +13,14 @@ typedef struct d {
 
 const char *usagetext="\n\
 usage:  c2d [-vh?]\n\
-        c2d [-m] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk\n\
+        c2d [-mu] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk\n\
 \n\
         -h|? this help\n\
         -m jump to monitor after booting\n\
         -s XXXX jump to XXXX after booting\n\
-        -t filename, where filename is a 1K $400-$7FF text page splash screen.\n\
-           The splash screen will display while the binary is loading.\n\
+        -t filename, where filename is a 1K $400-$7FF text page splash screen\n\
+           The splash screen will display while the binary is loading\n\
+        -u do not patch screen holes\n\
         -v print version number and exit\n\
 \n\
 Input without a .mon extension is assumed to be a binary with a 4 byte header.\n\
