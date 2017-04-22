@@ -33,7 +33,14 @@ clean:
 	(cd asm; make clean)
 
 gameserverclient.text: Makefile
-	figlet -c -w 40 -f slant "Game Server Online Client" >$@
+	( \
+	figlet -c -w 40 -f slant "Apple ][ Game Server Online!" | \
+	perl -p -e 's/^ +\n$$//' | \
+	sed '1,6s/^/ /'; \
+	echo; \
+	text="THE APPLE ][ AE WARESHOLE IS BACK!"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
+	text="CASSETTE PORT FTW! ---- ASCIIEXPRESS.NET"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
+	) | tail -24 >$@
 
 emutest: gameserverclient gameserverclient.mon gameserverclient.text dist
 	EMU=1 WIN=1 ./test.sh
