@@ -55,7 +55,7 @@ barloader.text: Makefile
 	text="________________________________________"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
 	echo; \
 	echo; \
-	text="HTTPS://GITHUB.COM/DATAJERK/C2D/"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
+	text="HTTP://GITHUB.COM/DATAJERK/C2D"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
 	) | tail -24 >$@
 
 barloader.textpage: barloader.text bin/text2page
