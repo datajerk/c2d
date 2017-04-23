@@ -7,7 +7,7 @@ windows: bin/c2d.exe bin/text2page.exe bin/page2text.exe
 
 dist: all windows
 
-c2d.h: c2d.h.0 asm/loader.s makeheader
+c2d.h: c2d.h.0 asm/loader.s asm/bar.s makeheader
 	./makeheader
 
 bin/c2d: c2d.c c2d.h holes.h
@@ -41,6 +41,28 @@ gameserverclient.text: Makefile
 	text="THE APPLE ][ AE WARESHOLE IS BACK!"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
 	text="CASSETTE PORT FTW! ---- ASCIIEXPRESS.NET"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
 	) | tail -24 >$@
+
+barloader.text: Makefile
+	( \
+	echo; \
+	figlet -c -w 40 -f poison "c2d"; \
+	echo; \
+	text="C2D (CODE TO DISK) BUILT-IN LOADER"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
+	echo; \
+	text="LOADING GAME SERVER CLIENT ..."; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
+	echo; \
+	text="________________________________________"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
+	text="________________________________________"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
+	echo; \
+	echo; \
+	text="HTTPS://GITHUB.COM/DATAJERK/C2D/"; printf "%*s\n" $$((($${#text}+40)/2)) "$$text"; \
+	) | tail -24 >$@
+
+barloader.textpage: barloader.text bin/text2page
+	bin/text2page <$< >$@
+
+gameserverclientbar.dsk: barloader.textpage gameserverclient bin/c2d
+	 bin/c2d -b -t $< gameserverclient,800 $@
 
 fulltest: gameserverclient gameserverclient.mon gameserverclient.text dist
 	EMU=1 WIN=1 ./test.sh

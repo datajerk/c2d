@@ -13,7 +13,7 @@ typedef struct d {
 
 const char *usagetext="\n\
 usage:  c2d [-vh?]\n\
-        c2d [-mu] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk\n\
+        c2d [-bum] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk\n\
 \n\
         -h|? this help\n\
         -m jump to monitor after booting\n\
@@ -21,6 +21,7 @@ usage:  c2d [-vh?]\n\
         -t filename, where filename is a 1K $400-$7FF text page splash screen\n\
            The splash screen will display while the binary is loading\n\
         -u do not patch screen holes\n\
+        -b animated loading bar (experimental)\n\
         -v print version number and exit\n\
 \n\
 Input without a .mon extension is assumed to be a binary with a 4 byte header.\n\
@@ -9164,4 +9165,195 @@ unsigned char loadercode[] = {
 	0x10,0xDE,0xA5,0x02,0x18,0x69,0x10,0x85,
 	0x02,0xE6,0x04,0xC6,0x00,0x10,0xBD,0x6C,
 	0x6A,0x03,0x4C,0x69,0xFF
+};
+/*
+;bar.s
+;
+; moves itself to another page memory,
+; then reads binary from disk using params at end,
+; then jumps to binary
+;
+
+; apple params/vectors
+
+warm    =       $FF69           ; back to monitor
+bell    =       $FBDD           ; ding
+preg    =       $48             ; mon p reg
+ch      =       $24             ; cursor horizontal
+movecur =       $FB5B           ; move cursor to ch,a
+cout    =       $FDED           ; character out sub
+
+; dos params/vectors
+
+rwtsprm =       $B7E8           ; looked at dos 3.3 disk, not using $3E3 to find
+rwts    =       $B7B5           ; rwts jsr
+
+; vars
+
+stage1  =       $800
+stage2  =       $300            ; $300 looks open
+invsp   =       $20             ; inverse space for draw
+;;;run time
+trkcnt  =       $00             ; track counter
+segcnt  =       $01             ; loop var
+buffer  =       $02             ; MSB of RWTS buffer
+secnum  =       $03             ; loop var
+trknum  =       $04             ; loop var
+barcnt  =       $05             ; bar counter
+barptr  =       $06             ; bar pointer
+
+
+        .org    stage1
+init:
+        lda     #0              ; reset pointer and counter
+        sta     barcnt
+        sta     barptr
+
+        lda     #1              ; read(1)/write(2) command
+        ldy     #$0C            ; offset in RWTS
+        sta     rwtsprm,y       ; write it to RWTS
+
+        lda     #0              ; buffer LSB
+        ldy     #8              ; offset in RWTS
+        sta     rwtsprm,y       ; write it to RWTS
+
+        lda     #2
+        sta     trknum          ; start with track 2
+
+start:
+        ldx     #0              ; move code to stage2
+move:
+        lda     moved,x
+        sta     loader,x
+        inx
+        cpx     #$D0
+        bne     move            ; move 208 bytes
+        jmp     loader
+
+moved:
+        .org    stage2
+
+loader:
+        lda     loadpage        ; where to dump the tracks
+        sta     buffer
+
+        ldx     lasttrack
+        dex                     ; because data starts at track 2
+        dex
+        stx     trkcnt          ; number of complete and partial tracks
+
+;;;begin track loop
+trkloop:
+        lda     trknum          ; track number
+        ldy     #4              ; offset in RWTS
+        sta     rwtsprm,y       ; write it to RWTS
+
+;;;begin sector loop (16), backwards is faster, much faster
+        lda     trkcnt          ; check if last track
+        bne     fulltrack       ; if not then full track
+        lda     lastsector      ; if so, get last sector number
+        bpl     subtrack
+fulltrack:
+        lda     #$F
+subtrack:
+        sta     secnum
+secloop:
+        lda     secnum          ; sector number
+        ldy     #5              ; offset in RWTS
+        sta     rwtsprm,y       ; write it to RWTS
+
+        lda     buffer          ; buffer MSB
+        clc
+        adc     secnum          ; compute page load address
+        ldy     #9              ; offset in RWTS
+        sta     rwtsprm,y       ; write it to RWTS
+
+        ldy     #<rwtsprm       ; load rwts paramlist B7E8
+        lda     #>rwtsprm
+        jsr     rwts            ; do it!
+        bcs     diskerror
+        lda     #0
+        sta     preg            ; fix p reg so mon is happy
+
+;;;draw code
+        inc     barcnt          ; sectors read
+        ldx     barptr          ; get current pointer value
+        lda     bar,x
+        cmp     barcnt          ; is bar,x = barcnt?
+        bne     nodraw          ; if bar,x = barcnt draw bar
+        lda     barptr          ; get position
+        ;clc
+        ;adc    #5              ; intend
+        sta     ch
+        lda     #19             ; row 19
+        jsr     movecur
+        lda     #invsp
+        jsr     cout
+        inc     barptr          ; move pointer to next bar position
+nodraw:
+;;;end draw code
+
+        dec     secnum
+        bpl     secloop
+;;;end sector loop
+
+        lda     buffer          ; buffer += $10
+        clc
+        adc     #$10
+        sta     buffer
+
+        inc     trknum          ; next track
+        dec     trkcnt          ;
+        bpl     trkloop         ; 0, all done with tracks
+;;;end track loop
+
+done:
+        jmp     (nextjump)      ; down with load, run it
+
+diskerror:
+        jmp     warm
+
+lasttrack:
+        .org    *+1
+lastsector:
+        .org    *+1
+loadpage:
+        .org    *+1
+nextjump:
+        .org    *+2
+bar:
+        .org    *+40
+;;; used for debug
+;trkcnt:
+;       .org    *+1
+;segcnt:
+;       .org    *+1
+;buffer:
+;       .org    *+1
+;secnum:
+;       .org    *+1
+;trknum:
+;       .org    *+1
+*/
+unsigned char barcode[] = {
+	0xA9,0x00,0x85,0x05,0x85,0x06,0xA9,0x01,
+	0xA0,0x0C,0x99,0xE8,0xB7,0xA9,0x00,0xA0,
+	0x08,0x99,0xE8,0xB7,0xA9,0x02,0x85,0x04,
+	0xA2,0x00,0xBD,0x28,0x08,0x9D,0x00,0x03,
+	0xE8,0xE0,0xD0,0xD0,0xF5,0x4C,0x00,0x03,
+	0xAD,0x72,0x03,0x85,0x02,0xAE,0x70,0x03,
+	0xCA,0xCA,0x86,0x00,0xA5,0x04,0xA0,0x04,
+	0x99,0xE8,0xB7,0xA5,0x00,0xD0,0x05,0xAD,
+	0x71,0x03,0x10,0x02,0xA9,0x0F,0x85,0x03,
+	0xA5,0x03,0xA0,0x05,0x99,0xE8,0xB7,0xA5,
+	0x02,0x18,0x65,0x03,0xA0,0x09,0x99,0xE8,
+	0xB7,0xA0,0xE8,0xA9,0xB7,0x20,0xB5,0xB7,
+	0xB0,0x33,0xA9,0x00,0x85,0x48,0xE6,0x05,
+	0xA6,0x06,0xBD,0x75,0x03,0xC5,0x05,0xD0,
+	0x10,0xA5,0x06,0x85,0x24,0xA9,0x13,0x20,
+	0x5B,0xFB,0xA9,0x20,0x20,0xED,0xFD,0xE6,
+	0x06,0xC6,0x03,0x10,0xC3,0xA5,0x02,0x18,
+	0x69,0x10,0x85,0x02,0xE6,0x04,0xC6,0x00,
+	0x10,0xA2,0x6C,0x73,0x03,0x4C,0x69,0xFF
+	
 };

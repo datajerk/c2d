@@ -1,6 +1,6 @@
 /*
 
-c2d, Code to Disk, Version 0.53
+c2d, Code to Disk, Version 0.54
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
@@ -43,7 +43,7 @@ Bugs:
 #include "c2d.h"
 #include "holes.h"
 
-#define VERSION "Version 0.53"
+#define VERSION "Version 0.54"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
@@ -57,13 +57,13 @@ int main(int argc, char **argv)
 {
 	FILE *ifp, *ofp;
 	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0, unpatch = 0;
-	int loaderstart, loader = 0, loadersize = 0, textpagesize = 0;
+	int loaderstart, loader = 0, loadersize = 0, loaderbasesize = 0, textpagesize = 0, bar = 0;
 	struct stat st;
 	char *filetypes[] = { "BINARY", "MONITOR" };
 	char *ext, filename[256], load_address[10], *textpage = NULL;
 
 	opterr = 1;
-	while ((c = getopt(argc, argv, "t:vmh?s:u")) != -1)
+	while ((c = getopt(argc, argv, "t:vmh?s:ub")) != -1)
 		switch (c) {
 		case 't':	// load a splash page while loading binary
 			loader = 1;
@@ -82,6 +82,9 @@ int main(int argc, char **argv)
 			break;
 		case 'u':
 			unpatch = 1;
+			break;
+		case 'b':
+			bar = 1;
 			break;
 		case 'h':	// help
 		case '?':
@@ -218,8 +221,7 @@ int main(int argc, char **argv)
 		fclose(ifp);
 
 		// patch holes
-		if(!unpatch)
-		{
+		if(!unpatch) {
 			uint64_t *p = (uint64_t *)&blank.track[1].sector[0].byte[0];	// set to start of splash page
 			uint64_t *h = (uint64_t *)&holes;								// holes are 64-bits
 			int i;
@@ -232,13 +234,26 @@ int main(int argc, char **argv)
 			}
 		}
 
-		if ((loadersize = sizeof(loadercode)) > 256) {
-			fprintf(stderr, "Loader code size %d > 256\n\n", loadersize);
-			return 1;
-		}
+		if(!bar) {
+			loaderbasesize = sizeof(loadercode);
+			if ((loadersize = sizeof(loadercode)) > 256) {
+				fprintf(stderr, "Loader code size %d > 256\n\n", loadersize);
+				return 1;
+			}
 
-		for (i = 0; i < loadersize; i++)
-			blank.track[1].sector[4].byte[i] = loadercode[i];
+			for (i = 0; i < loadersize; i++)
+				blank.track[1].sector[4].byte[i] = loadercode[i];
+		}
+		else {
+			loaderbasesize = sizeof(barcode);
+			if ((loadersize = sizeof(barcode)) > 256) {
+				fprintf(stderr, "Loader code size %d > 256\n\n", loadersize);
+				return 1;
+			}
+
+			for (i = 0; i < loadersize; i++)
+				blank.track[1].sector[4].byte[i] = barcode[i];
+		}
 
 		// loader args
 		// lasttrack
@@ -251,6 +266,16 @@ int main(int argc, char **argv)
 		blank.track[1].sector[4].byte[loadersize + 3] = start & 0xFF;
 		// program start MSB
 		blank.track[1].sector[4].byte[loadersize + 4] = start >> 8;
+
+		//bar code, pre compute status bar table
+		if(bar) {
+			int num_sectors = (int) ceil((filesize + (loadaddress & 0xFF)) / 256.0);
+			int bar_length = 40;
+			int i;
+
+			for(i = 1; i <= bar_length; i++)
+				blank.track[1].sector[4].byte[loadersize + 4 + i] = i * num_sectors / bar_length;
+		}
 
 		loaderstart = 0x400;
 
@@ -278,7 +303,7 @@ int main(int argc, char **argv)
 
 		fprintf(stderr, "After boot, jump to:         $%04X\n", loaderstart);
 		fprintf(stderr, "\n");
-		fprintf(stderr, "Writing %s to T:02/S:00 - T:%02d/S:%02d on %s\n\n", filename, blank.track[1].sector[4].byte[sizeof(loadercode)], blank.track[1].sector[4].byte[sizeof(loadercode) + 1], OUTFILE);
+		fprintf(stderr, "Writing %s to T:02/S:00 - T:%02d/S:%02d on %s\n\n", filename, blank.track[1].sector[4].byte[sizeof(loadercode)], blank.track[1].sector[4].byte[loaderbasesize + 1], OUTFILE);
 	}
 
 	if ((ofp = fopen(OUTFILE, "wb")) == NULL) {

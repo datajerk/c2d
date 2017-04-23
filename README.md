@@ -51,7 +51,7 @@ Windows/MinGW:
 
 ```
 usage:  c2d [-vh?]
-        c2d [-mu] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk
+        c2d [-bum] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk
 
         -h|? this help
         -m jump to monitor after booting
@@ -59,6 +59,7 @@ usage:  c2d [-vh?]
         -t filename, where filename is a 1K $400-$7FF text page splash screen
            The splash screen will display while the binary is loading
         -u do not patch screen holes
+        -b animated loading bar (experimental)
         -v print version number and exit
 
 Input without a .mon extension is assumed to be a binary with a 4 byte header.
@@ -104,7 +105,7 @@ Yes.  No input checking.  Big Endian untested.
 
 ### The Ugly Stuff
 
-c2d, Code to Disk, Version 0.53
+c2d, Code to Disk, Version 0.54
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 

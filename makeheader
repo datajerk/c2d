@@ -38,6 +38,7 @@ make
 
 (
 header loader loadercode 8
+header bar barcode 8
 ) > ../c2d.h.1
 
 cd ..
