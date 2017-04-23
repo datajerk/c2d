@@ -83,7 +83,7 @@ Examples:
 
 ### text2page Example
 
-Input is expected to be ASCII text (LF or CRLF line terminated).  Only the first 40 characters/line and the first 24 lines are read.  See `gameserverclient.text` example.
+Input is expected to be ASCII text (LF or CRLF line terminated).  Only the first 40 characters/line and the first 24 lines are read.  See `gameserverclient.text` and `barloader.text` examples.
 
 ```
 text2page <gameserverclient.text >gameserverclient.textpage
