@@ -99,6 +99,24 @@ Input is expected to be an Apple II binary from $400-$7FF.  Exactly 1024 bytes. 
 page2text <gameserverclient.textpage >gameserverclient.text
 ```
 
+### Testing
+
+Automated testing is only supported on OS/X and requires the following:
+
+
+* Virtual ][ (<http://http://www.virtualii.com/>)
+* Windows cross-compiling tools <http://crossgcc.rts-software.org/download/gcc-4.8.0-qt-4.8.4-win32/gcc-4.8.0-qt-4.8.4-for-mingw32.dmg>
+* Wine (<http://winehq.org>) installed in `~/wine` (extract the tarball in `~/wine` and move the contents of `~/wine/usr` to `~/wine`, or change the path to `wine` in `tests/test.sh`).
+
+To test, type:
+```
+make test     # OS/X only
+make disttest # OS/X and Windows
+make fulltest # OS/X, Windows, and Virtual ][
+```
+> If Virtual ][ crashes while testing, just `make fulltest` again 
+
+
 ### Bugs
 
 Yes.  No input checking.  Big Endian untested.
