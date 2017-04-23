@@ -24,7 +24,6 @@ rwts	=	$B7B5		; rwts jsr
 stage1	=	$800
 stage2	=	$300		; $300 looks open
 invsp	=	$20		; inverse space for draw
-;;;run time
 trkcnt	=	$00		; track counter
 segcnt	=	$01		; loop var
 buffer	=	$02		; MSB of RWTS buffer
@@ -114,9 +113,9 @@ secloop:
 	bne	nodraw		; if bar,x = barcnt draw bar
 	lda	barptr		; get position
 	;clc
-	;adc	#5		; intend
+	;adc	#5		; indent
 	sta	ch
-	lda	#19		; row 19
+	lda	row		; row 19
 	jsr	movecur
 	lda	#invsp
 	jsr	cout
@@ -152,16 +151,7 @@ loadpage:
 	.org	*+1
 nextjump:
 	.org	*+2
+row:
+	.org	*+1
 bar:
 	.org	*+40
-;;; used for debug
-;trkcnt:
-;	.org	*+1
-;segcnt:
-;	.org	*+1
-;buffer:
-;	.org	*+1
-;secnum:
-;	.org	*+1
-;trknum:
-;	.org	*+1

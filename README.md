@@ -51,7 +51,7 @@ Windows/MinGW:
 
 ```
 usage:  c2d [-vh?]
-        c2d [-bum] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk
+        c2d [-bum] [-r row] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk
 
         -h|? this help
         -m jump to monitor after booting
@@ -60,6 +60,7 @@ usage:  c2d [-vh?]
            The splash screen will display while the binary is loading
         -u do not patch screen holes
         -b animated loading bar (experimental)
+        -r override row default of 19 with 'row'
         -v print version number and exit
 
 Input without a .mon extension is assumed to be a binary with a 4 byte header.

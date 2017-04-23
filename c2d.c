@@ -1,6 +1,6 @@
 /*
 
-c2d, Code to Disk, Version 0.54
+c2d, Code to Disk, Version 0.55
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
@@ -43,7 +43,7 @@ Bugs:
 #include "c2d.h"
 #include "holes.h"
 
-#define VERSION "Version 0.54"
+#define VERSION "Version 0.55"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
@@ -57,13 +57,13 @@ int main(int argc, char **argv)
 {
 	FILE *ifp, *ofp;
 	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0, unpatch = 0;
-	int loaderstart, loader = 0, loadersize = 0, loaderbasesize = 0, textpagesize = 0, bar = 0;
+	int loaderstart, loader = 0, loadersize = 0, loaderbasesize = 0, textpagesize = 0, bar = 0, row = 19;
 	struct stat st;
 	char *filetypes[] = { "BINARY", "MONITOR" };
 	char *ext, filename[256], load_address[10], *textpage = NULL;
 
 	opterr = 1;
-	while ((c = getopt(argc, argv, "t:vmh?s:ub")) != -1)
+	while ((c = getopt(argc, argv, "r:t:vmh?s:ub")) != -1)
 		switch (c) {
 		case 't':	// load a splash page while loading binary
 			loader = 1;
@@ -79,6 +79,9 @@ int main(int argc, char **argv)
 		case 's':	// start here instead of load address
 			warm = 0;
 			start = (int) strtol(optarg, (char **) NULL, 16);	// todo: input check
+			break;
+		case 'r':	// bar row
+			row = (int) strtol(optarg, (char **) NULL, 10);	// todo: input check
 			break;
 		case 'u':
 			unpatch = 1;
@@ -273,8 +276,11 @@ int main(int argc, char **argv)
 			int bar_length = 40;
 			int i;
 
+			// bar row
+			blank.track[1].sector[4].byte[loadersize + 5] = row;
+
 			for(i = 1; i <= bar_length; i++)
-				blank.track[1].sector[4].byte[loadersize + 4 + i] = i * num_sectors / bar_length;
+				blank.track[1].sector[4].byte[loadersize + 5 + i] = i * num_sectors / bar_length;
 		}
 
 		loaderstart = 0x400;
