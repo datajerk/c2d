@@ -32,6 +32,24 @@ trknum	=	$04		; loop var
 start:
         .org	stage1
 
+grcheck:
+	lda	*+(gr-loader)+(moved-grcheck)
+	beq	init
+	lda	#0		; GR mode
+	sta	$C050
+	sta	$C053
+init:
+	lda	#1		; read(1)/write(2) command
+	ldy	#$0C		; offset in RWTS
+	sta	rwtsprm,y	; write it to RWTS
+
+	lda	#0		; buffer LSB
+	ldy	#8		; offset in RWTS
+	sta	rwtsprm,y	; write it to RWTS
+
+	lda	#2
+	sta	trknum		; start with track 2
+
 	ldx	#0		; move code to stage2
 move:
 	lda	moved,x
@@ -45,17 +63,6 @@ moved:
 	.org	stage2
 
 loader:
-	lda	#1		; read(1)/write(2) command
-	ldy	#$0C		; offset in RWTS
-	sta	rwtsprm,y	; write it to RWTS
-
-	lda	#0		; buffer LSB
-	ldy	#8		; offset in RWTS
-	sta	rwtsprm,y	; write it to RWTS
-
-	lda	#2
-	sta	trknum		; start with track 2
-
 	lda	loadpage	; where to dump the tracks
 	sta	buffer
 
@@ -125,14 +132,5 @@ loadpage:
 	.org	*+1
 nextjump:
 	.org	*+2
-;;; used for debug
-;trkcnt:
-;	.org	*+1
-;segcnt:
-;	.org	*+1
-;buffer:
-;	.org	*+1
-;secnum:
-;	.org	*+1
-;trknum:
-;	.org	*+1
+gr:
+	.org	*+1

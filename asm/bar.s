@@ -34,6 +34,15 @@ barptr	=	$06		; bar pointer
 
 
         .org	stage1
+
+grcheck:
+	lda	*+(gr-loader)+(moved-grcheck)
+	beq	text
+	lda	#0		; GR mode
+	sta	$C050
+	sta	$C053
+text:
+
 init:
 	lda	#0		; reset pointer and counter
 	sta	barcnt
@@ -114,11 +123,24 @@ secloop:
 	lda	barptr		; get position
 	;clc
 	;adc	#5		; indent
-	sta	ch
-	lda	row		; row 19
-	jsr	movecur
-	lda	#invsp
-	jsr	cout
+
+	; new version, no rom calls, just poke to screen
+	clc			; clear carry
+	adc	rowlsb		; add the text page row lsb
+	sta	screen+1	; store that in self mod code
+	lda	rowmsb		; get text page row msb
+	sta	screen+2	; store that in self mod code
+	lda	#invsp		; load block char
+screen:
+	sta	$400		; write out char
+
+	; old version, rom calls, cout will scroll windows on 40x24
+	;sta	ch
+	;lda	row		; row 19
+	;jsr	movecur
+	;lda	#invsp
+	;jsr	cout
+
 	inc	barptr		; move pointer to next bar position
 nodraw:
 ;;;end draw code
@@ -151,7 +173,13 @@ loadpage:
 	.org	*+1
 nextjump:
 	.org	*+2
+gr:
+	.org	*+1
 row:
+	.org	*+1
+rowlsb:
+	.org	*+1
+rowmsb:
 	.org	*+1
 bar:
 	.org	*+40

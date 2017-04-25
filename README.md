@@ -124,7 +124,7 @@ Yes.  No input checking.  Big Endian untested.
 
 ### The Ugly Stuff
 
-c2d, Code to Disk, Version 0.55
+c2d, Code to Disk, Version 0.56
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 

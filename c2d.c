@@ -1,6 +1,6 @@
 /*
 
-c2d, Code to Disk, Version 0.55
+c2d, Code to Disk, Version 0.56
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
@@ -43,7 +43,7 @@ Bugs:
 #include "c2d.h"
 #include "holes.h"
 
-#define VERSION "Version 0.55"
+#define VERSION "Version 0.56"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
@@ -57,13 +57,14 @@ int main(int argc, char **argv)
 {
 	FILE *ifp, *ofp;
 	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0, unpatch = 0;
-	int loaderstart, loader = 0, loadersize = 0, loaderbasesize = 0, textpagesize = 0, bar = 0, row = 19;
+	int loaderstart, loader = 0, loadersize = 0, loaderbasesize = 0, textpagesize = 0;
+	int bar = 0, row = 19, gr = 0;
 	struct stat st;
 	char *filetypes[] = { "BINARY", "MONITOR" };
 	char *ext, filename[256], load_address[10], *textpage = NULL;
 
 	opterr = 1;
-	while ((c = getopt(argc, argv, "r:t:vmh?s:ub")) != -1)
+	while ((c = getopt(argc, argv, "gr:t:vmh?s:ub")) != -1)
 		switch (c) {
 		case 't':	// load a splash page while loading binary
 			loader = 1;
@@ -82,12 +83,17 @@ int main(int argc, char **argv)
 			break;
 		case 'r':	// bar row
 			row = (int) strtol(optarg, (char **) NULL, 10);	// todo: input check
+			if (row > 23)
+				row = 23;
 			break;
 		case 'u':
 			unpatch = 1;
 			break;
 		case 'b':
 			bar = 1;
+			break;
+		case 'g':
+			gr = 1;
 			break;
 		case 'h':	// help
 		case '?':
@@ -269,18 +275,31 @@ int main(int argc, char **argv)
 		blank.track[1].sector[4].byte[loadersize + 3] = start & 0xFF;
 		// program start MSB
 		blank.track[1].sector[4].byte[loadersize + 4] = start >> 8;
+		// gr mode
+		blank.track[1].sector[4].byte[loadersize + 5] = gr;
 
 		//bar code, pre compute status bar table
 		if(bar) {
 			int num_sectors = (int) ceil((filesize + (loadaddress & 0xFF)) / 256.0);
 			int bar_length = 40;
-			int i;
+			int i, rowaddr;
 
 			// bar row
-			blank.track[1].sector[4].byte[loadersize + 5] = row;
+			blank.track[1].sector[4].byte[loadersize + 6] = row;
+
+			rowaddr = 0x400+(row/8)*0x28+((row%8)*0x80);
+
+			// program start LSB
+			blank.track[1].sector[4].byte[loadersize + 7] = rowaddr & 0xFF;
+			// program start MSB
+			blank.track[1].sector[4].byte[loadersize + 8] = rowaddr >> 8;
+
+			// temp hack to prevent screen from scrolling
+			//if(row == 23)
+			//	bar_length = 39;
 
 			for(i = 1; i <= bar_length; i++)
-				blank.track[1].sector[4].byte[loadersize + 5 + i] = i * num_sectors / bar_length;
+				blank.track[1].sector[4].byte[loadersize + 8 + i] = i * num_sectors / bar_length;
 		}
 
 		loaderstart = 0x400;
