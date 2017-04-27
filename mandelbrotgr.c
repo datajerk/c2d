@@ -8,9 +8,15 @@
 #define MAX 15
 #define NORMAL 0x80
 
-// chanage order and number of colors for different output
 // unsigned char colors[16] = { 0xF, 0xE, 0xD, 0xC, 0xB, 0xA, 0x9, 0x8, 0x7, 0x6, 0x5, 0x4, 0x3, 0x2, 0x1, 0x0 };
-unsigned char colors[15] = { 0xE, 0xD, 0xC, 0xB, 0xA, 0x9, 0x8, 0x7, 0x6, 0x5, 0x4, 0x3, 0x2, 0x1, 0x0 };
+
+// chanage order and number of colors for different output
+// default palette
+// unsigned char colors[15] = { 0xE, 0xD, 0xC, 0xB, 0xA, 0x9, 0x8, 0x7, 0x6, 0x5, 0x4, 0x3, 0x2, 0x1, 0x0 };
+// redish
+// unsigned char colors[15] = { 0xB, 0x3, 0x1, 0x9, 0xD, 0xE, 0xB, 0x4, 0x7, 0x6, 0x2, 0xA, 0x5, 0x8, 0x0 };
+// blueish
+unsigned char colors[15] = { 0x2, 0x6, 0x7, 0xE, 0xC, 0x4, 0xD, 0x9, 0xB, 0x3, 0x1, 0xA, 0x5, 0x8, 0x0 };
 
 const char text[4][41] = {
 	"EXAMPLE GR SPLASH SCREEN",
@@ -22,7 +28,7 @@ const char text[4][41] = {
 int main(int argc, char **argv)
 {
 	int c, r, i, j, k, line = 0;
-	double xd, yd, x0, y0, x, y, xt, pixelarea, area = 0;
+	double xd, yd, x0, y0, x, y, xt;
 	unsigned char screen[24][40];
 
 	// clear screen to zeros
@@ -34,11 +40,14 @@ int main(int argc, char **argv)
 	r = 40;
 	xd = (1.0 - -2.5) / (double) c;	// size of x pixel
 	yd = (1.0 - -1.0) / (double) r;	// size of y pixel
-	pixelarea = xd * yd;
 
-	for (i = 0; i < r; i++) {
+	// 39 rows, set i = 1
+	for (i = 1; i < r; i++) {
 		// gr text page translation
-		line = 3 * ((i / 2) % 8) + i / 16;
+		// 40 row
+		// line = 3 * ((i / 2) % 8) + i / 16;
+		// 39 row
+		line = 3 * (((i - 1) / 2) % 8) + (i - 1) / 16;
 		y0 = 1 - i * yd;
 		for (j = 0; j < c; j++) {
 			x0 = -2.5 + j * xd;
@@ -49,9 +58,12 @@ int main(int argc, char **argv)
 				x = xt;
 				k++;
 			}
-			screen[line][j] |= (colors[(k - 1) / (MAX / sizeof(colors))] << 4 * (i % 2));
-			if (k == MAX)
-				area += pixelarea;
+
+			// 39 row
+			screen[line][j] |= (colors[(k - 1) / (MAX / sizeof(colors))] << 4 * (i % 2 == 0));
+
+			// 40 row
+			//screen[line][j] |= (colors[(k - 1) / (MAX / sizeof(colors))] << 4 * (i % 2));
 		}
 	}
 
@@ -63,8 +75,8 @@ int main(int argc, char **argv)
 	}
 
 	for (i = 0; i < 4; i++) {
-		line = 3 * ((i+20) % 8) + (i+20) / 8;
-		for (j = 0; j < 20 - strlen(text[i])/2; j++)
+		line = 3 * ((i + 20) % 8) + (i + 20) / 8;
+		for (j = 0; j < 20 - strlen(text[i]) / 2; j++)
 			screen[line][j] = ' ' | NORMAL;	// text rows
 		for (k = 0; k < strlen(text[i]); k++)
 			screen[line][j++] = text[i][k] | NORMAL;
