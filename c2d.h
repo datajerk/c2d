@@ -9147,6 +9147,7 @@ nextjump:
         .org    *+2
 gr:
         .org    *+1
+end:
 */
 unsigned char loadercode[] = {
 	0xAD,0x87,0x08,0xF0,0x08,0xA9,0x00,0x8D,
@@ -9353,6 +9354,7 @@ rowmsb:
         .org    *+1
 bar:
         .org    *+40
+end:
 */
 unsigned char barcode[] = {
 	0xAD,0xB0,0x08,0xF0,0x08,0xA9,0x00,0x8D,
