@@ -84,7 +84,9 @@ Examples:
 
 ### Splash Page Examples
 
-Click on image to see video.
+*Click on image to see video.*
+
+> Splash pages are the exact bytes the Apple II expects in memory range $400-$7FF.  Your splash screen should be exactly 1024 bytes (don't worry the `c2d` loader will not over-right the Peripheral Slot Scratchpad RAM).
 
 ```
 c2d -t gameserverclient.textpage gameserverclient,800 gameserverclient.dsk
