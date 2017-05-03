@@ -3,7 +3,6 @@
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <strings.h>
-#include "holes.h"
 
 #define MAX 15
 #define NORMAL 0x80
@@ -88,7 +87,7 @@ int main(int argc, char **argv)
 			putchar(screen[i][j]);
 		if (i % 3 == 2)
 			for (k = 0; k < 8; k++)
-				putchar(holes[(i / 3) * 8 + k]);
+				putchar(0x0);
 	}
 
 	return 0;

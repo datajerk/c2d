@@ -60,7 +60,7 @@ then
 	fi
 fi
 
-SUM=7d509bcef9a53c89839a0622514955fd
+SUM=df792a2715bb9f7b91aed94e19e5f46c
 
 rm -f ${BIN}.dsk
 echo
@@ -158,7 +158,7 @@ rm -f ${BIN}.dsk
 	fi
 fi
 
-SUM=7d509bcef9a53c89839a0622514955fd
+SUM=df792a2715bb9f7b91aed94e19e5f46c
 
 rm -f ${BIN}.dsk
 echo

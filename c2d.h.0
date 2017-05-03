@@ -13,15 +13,15 @@ typedef struct d {
 
 const char *usagetext="\n\
 usage:  c2d [-vh?]\n\
-        c2d [-bum] [-r row] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk\n\
+        c2d [-bgm] [-r row] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk\n\
 \n\
         -h|? this help\n\
         -m jump to monitor after booting\n\
         -s XXXX jump to XXXX after booting\n\
         -t filename, where filename is a 1K $400-$7FF text page splash screen\n\
            The splash screen will display while the binary is loading\n\
-        -u do not patch screen holes\n\
         -b animated loading bar (experimental)\n\
+        -g splash page is mixed mode GR\n\
         -r override row default of 19 with 'row'\n\
         -v print version number and exit\n\
 \n\

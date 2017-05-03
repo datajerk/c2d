@@ -19,7 +19,6 @@ rwts	=	$B7B5		; rwts jsr
 ; vars
 
 stage1	=	$C00
-;stage2	=	$B600		; overwrite track 0/sector 0, not needed any more?
 stage2	=	$300		; $300 looks open
 ;;;run time
 trkcnt	=	$00		; track counter

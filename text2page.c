@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "holes.h"
 
 #define NORMAL 0x80
 #define BLINK 0x40
@@ -39,7 +38,7 @@ int main()
 			putchar(screen[i][j]);
 		if (i % 3 == 2)
 			for (k = 0; k < 8; k++)
-				putchar(holes[(i / 3) * 8 + k]);
+				putchar(0x0);
 	}
 
 	return 0;

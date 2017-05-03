@@ -41,7 +41,6 @@ Bugs:
 #include <math.h>
 #include <sys/stat.h>
 #include "c2d.h"
-#include "holes.h"
 
 #define VERSION "Version 0.57"
 #define INFILE argv[argc-2]
@@ -56,7 +55,7 @@ char *getext(char *filename);
 int main(int argc, char **argv)
 {
 	FILE *ifp, *ofp;
-	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0, unpatch = 0;
+	int c, i, j, k, start = 0, loadaddress, inputtype, warm = 0, filesize = 0;
 	int loaderstart, loader = 0, loadersize = 0, loaderbasesize = 0, textpagesize = 0;
 	int bar = 0, row = 19, gr = 0;
 	struct stat st;
@@ -64,7 +63,7 @@ int main(int argc, char **argv)
 	char *ext, filename[256], load_address[10], *textpage = NULL;
 
 	opterr = 1;
-	while ((c = getopt(argc, argv, "gr:t:vmh?s:ub")) != -1)
+	while ((c = getopt(argc, argv, "gr:t:vmh?s:b")) != -1)
 		switch (c) {
 		case 't':	// load a splash page while loading binary
 			loader = 1;
@@ -85,9 +84,6 @@ int main(int argc, char **argv)
 			row = (int) strtol(optarg, (char **) NULL, 10);	// todo: input check
 			if (row > 23)
 				row = 23;
-			break;
-		case 'u':
-			unpatch = 1;
 			break;
 		case 'b':
 			bar = 1;
@@ -229,20 +225,6 @@ int main(int argc, char **argv)
 		fread(&blank.track[1].sector[0].byte[0], textpagesize, 1, ifp);
 		fclose(ifp);
 
-		// patch holes
-		if(!unpatch) {
-			uint64_t *p = (uint64_t *)&blank.track[1].sector[0].byte[0];	// set to start of splash page
-			uint64_t *h = (uint64_t *)&holes;								// holes are 64-bits
-			int i;
-
-			p -= 1;		// back up virtual hole
-
-			for(i = 0; i < 8; i++) {
-				p += 16;	// 3 lines x 40 columns + last hole / 8 (64-bit);
-				*p = *h++;	// copy screen hole data
-			}
-		}
-
 		if(!bar) {
 			loaderbasesize = sizeof(loadercode);
 			if ((loadersize = sizeof(loadercode)) > 256) {
@@ -302,10 +284,6 @@ int main(int argc, char **argv)
 				blank.track[1].sector[4].byte[loadersize + 8 + i] = i * num_sectors / bar_length;
 		}
 
-		// this version loads text page right into place, however can cause
-		// issues with scratchpad RAM
-		// loaderstart = 0x400;
-		// load here and move to 0x400 just the text data
 		loaderstart = 0x800;
 
 		// temp hack to effect the sound of the drive, i.e. to make consistent

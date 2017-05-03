@@ -21,7 +21,7 @@ rwts	=	$B7B5		; rwts jsr
 
 ; vars
 
-stage1	=	$800
+stage1	=	$C00
 stage2	=	$300		; $300 looks open
 invsp	=	$20		; inverse space for draw
 trkcnt	=	$00		; track counter
@@ -37,12 +37,32 @@ barptr	=	$06		; bar pointer
 
 grcheck:
 	lda	*+(gr-loader)+(moved-grcheck)
-	beq	text
+	beq	movetext
 	lda	#0		; GR mode
 	sta	$C050
 	sta	$C053
-text:
-
+movetext:
+	ldx	#0
+movetx:
+	lda	$800,x
+	sta	$400,x
+	lda	$880,x
+	sta	$480,x
+	lda	$900,x
+	sta	$500,x
+	lda	$980,x
+	sta	$580,x
+	lda	$A00,x
+	sta	$600,x
+	lda	$A80,x
+	sta	$680,x
+	lda	$B00,x
+	sta	$700,x
+	lda	$B80,x
+	sta	$780,x
+	inx
+	cpx	#120
+	bne	movetx		; move 120 bytes
 init:
 	lda	#0		; reset pointer and counter
 	sta	barcnt
