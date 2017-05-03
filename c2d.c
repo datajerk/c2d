@@ -1,6 +1,6 @@
 /*
 
-c2d, Code to Disk, Version 0.56
+c2d, Code to Disk, Version 0.57
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
@@ -43,7 +43,7 @@ Bugs:
 #include "c2d.h"
 #include "holes.h"
 
-#define VERSION "Version 0.56"
+#define VERSION "Version 0.57"
 #define INFILE argv[argc-2]
 #define OUTFILE argv[argc-1]
 #define BINARY 0
@@ -302,7 +302,11 @@ int main(int argc, char **argv)
 				blank.track[1].sector[4].byte[loadersize + 8 + i] = i * num_sectors / bar_length;
 		}
 
-		loaderstart = 0x400;
+		// this version loads text page right into place, however can cause
+		// issues with scratchpad RAM
+		// loaderstart = 0x400;
+		// load here and move to 0x400 just the text data
+		loaderstart = 0x800;
 
 		// temp hack to effect the sound of the drive, i.e. to make consistent
 		// longer term put binary payload at end of loader
@@ -320,7 +324,8 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Binary Number of sectors:    %d\n", (int) ceil((filesize + (loadaddress & 0xFF)) / 256.0));
 		fprintf(stderr, "Binary Memory page range:    $%02X - $%02X\n", loadaddress >> 8, (loadaddress + filesize - 1) >> 8);
 
-		loaderstart = 0x800;
+		//loaderstart = 0x800;
+		loaderstart = 0xC00;
 
 		blank.track[0].sector[1].byte[0x3B] = 0x4C;
 		blank.track[0].sector[1].byte[0x3C] = loaderstart & 0xFF;
