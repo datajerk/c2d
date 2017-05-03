@@ -18,8 +18,8 @@
 unsigned char colors[15] = { 0x2, 0x6, 0x7, 0xE, 0xC, 0x4, 0xD, 0x9, 0xB, 0x3, 0x1, 0xA, 0x5, 0x8, 0x0 };
 
 const char text[4][41] = {
-	"EXAMPLE GR SPLASH SCREEN",
-	"LOADING GAME SERVER CLIENT ...",
+	"EXAMPLE GR/TEXT SPLASH SCREEN",
+	"LOADING GAME SERVER CLIENT...",
 	"________________________________________",
 	"________________________________________",
 };

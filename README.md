@@ -51,15 +51,15 @@ Windows/MinGW:
 
 ```
 usage:  c2d [-vh?]
-        c2d [-bum] [-r row] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk
+        c2d [-bgm] [-r row] [-t filename] [-s start address override] input[.mon],[load_address] output.dsk
 
         -h|? this help
         -m jump to monitor after booting
         -s XXXX jump to XXXX after booting
         -t filename, where filename is a 1K $400-$7FF text page splash screen
            The splash screen will display while the binary is loading
-        -u do not patch screen holes
-        -b animated loading bar (experimental)
+        -b animated loading bar
+        -g splash page is mixed mode GR
         -r override row default of 19 with 'row'
         -v print version number and exit
 
@@ -81,6 +81,34 @@ Examples:
         c2d -s 7300 alpha4,400 alpha4.dsk
         c2d -t gameserverclient.textpage gameserverclient,800 gameserverclient.dsk
 ```
+
+### Splash Page Examples
+
+Click on image to see video.
+
+```
+c2d -t gameserverclient.textpage gameserverclient,800 gameserverclient.dsk
+```
+
+`-t gameserverclient.textpage` tell `c2d` to put up a text splash page while the binary is loading.
+
+[![splash](https://img.youtube.com/vi/9EPy0JnnJyA/0.jpg)](https://www.youtube.com/watch?v=9EPy0JnnJyA "splash")
+
+```
+c2d -b -t barloader.textpage gameserverclient,800 gameserverclientbar.dsk
+```
+
+`-b` adds an animated bar on line 19.
+
+[![splash](https://img.youtube.com/vi/D3SaHlw4fgM/0.jpg)](https://www.youtube.com/watch?v=D3SaHlw4fgM "splashbar")
+
+```
+c2d -b -g -r 23 -t bargrloader.textpage gameserverclient,800 gameserverclientbargr.dsk
+```
+
+`-r 23` moves the animated bar to line 23, and `-g` indicates the splash page is mixed mode text/gr.
+
+[![splashbargr](https://img.youtube.com/vi/4Ik1eraAM6c/0.jpg)](https://www.youtube.com/watch?v=4Ik1eraAM6c "splashbargr")
 
 ### text2page Example
 
@@ -124,7 +152,7 @@ Yes.  No input checking.  Big Endian untested.
 
 ### The Ugly Stuff
 
-c2d, Code to Disk, Version 0.56
+c2d, Code to Disk, Version 0.57
 
 (c) 2012,2017 All Rights Reserved, Egan Ford (egan@sense.net)
 
