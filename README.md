@@ -116,8 +116,6 @@ c2d -b -g -r 23 -t bargrloader.textpage gameserverclient,800 gameserverclientbar
 
 [![splashbargr](https://img.youtube.com/vi/4Ik1eraAM6c/0.jpg)](https://www.youtube.com/watch?v=4Ik1eraAM6c "splashbargr")
 
------
-
 ### text2page Example
 
 Input is expected to be ASCII text (LF or CRLF line terminated).  Only the first 40 characters/line and the first 24 lines are read.  See `gameserverclient.text` and `barloader.text` examples.
