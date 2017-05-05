@@ -86,15 +86,17 @@ Examples:
 
 *Click on image to see video.*
 
-> Splash pages are the exact bytes the Apple II expects in memory range $400-$7FF.  Your splash screen should be exactly 1024 bytes (don't worry the `c2d` loader will not over-right the Peripheral Slot Scratchpad RAM).
+> Splash pages are the exact bytes the Apple II expects in memory range $400-$7FF.  Your splash screen should be exactly 1024 bytes (do not worry, the `c2d` loader will not over-right the Peripheral Slot Scratchpad RAM).
 
 ```
 c2d -t gameserverclient.textpage gameserverclient,800 gameserverclient.dsk
 ```
 
-`-t gameserverclient.textpage` tell `c2d` to put up a text splash page while the binary is loading.
+`-t gameserverclient.textpage` instructs `c2d` to put up a text splash page while the binary is loading.
 
 [![splash](https://img.youtube.com/vi/9EPy0JnnJyA/0.jpg)](https://www.youtube.com/watch?v=9EPy0JnnJyA "splash")
+
+-----
 
 ```
 c2d -b -t barloader.textpage gameserverclient,800 gameserverclientbar.dsk
@@ -104,6 +106,8 @@ c2d -b -t barloader.textpage gameserverclient,800 gameserverclientbar.dsk
 
 [![splash](https://img.youtube.com/vi/D3SaHlw4fgM/0.jpg)](https://www.youtube.com/watch?v=D3SaHlw4fgM "splashbar")
 
+-----
+
 ```
 c2d -b -g -r 23 -t bargrloader.textpage gameserverclient,800 gameserverclientbargr.dsk
 ```
@@ -111,6 +115,8 @@ c2d -b -g -r 23 -t bargrloader.textpage gameserverclient,800 gameserverclientbar
 `-r 23` moves the animated bar to line 23, and `-g` indicates the splash page is mixed mode text/gr.
 
 [![splashbargr](https://img.youtube.com/vi/4Ik1eraAM6c/0.jpg)](https://www.youtube.com/watch?v=4Ik1eraAM6c "splashbargr")
+
+-----
 
 ### text2page Example
 

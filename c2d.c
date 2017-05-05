@@ -276,10 +276,6 @@ int main(int argc, char **argv)
 			// program start MSB
 			blank.track[1].sector[4].byte[loadersize + 8] = rowaddr >> 8;
 
-			// temp hack to prevent screen from scrolling
-			//if(row == 23)
-			//	bar_length = 39;
-
 			for(i = 1; i <= bar_length; i++)
 				blank.track[1].sector[4].byte[loadersize + 8 + i] = i * num_sectors / bar_length;
 		}
@@ -302,7 +298,6 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Binary Number of sectors:    %d\n", (int) ceil((filesize + (loadaddress & 0xFF)) / 256.0));
 		fprintf(stderr, "Binary Memory page range:    $%02X - $%02X\n", loadaddress >> 8, (loadaddress + filesize - 1) >> 8);
 
-		//loaderstart = 0x800;
 		loaderstart = 0xC00;
 
 		blank.track[0].sector[1].byte[0x3B] = 0x4C;
