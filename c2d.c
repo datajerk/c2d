@@ -18,7 +18,7 @@ License:
 
 Description:
 	This small utility will read Apple II binary and monitor text files and
-    output a DOS ordered dsk image that will boot your code quickly.
+	output a DOS ordered dsk image that will boot your code quickly.
 
 Features:
 	*  Apple II+, IIe support.

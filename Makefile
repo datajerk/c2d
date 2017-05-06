@@ -65,16 +65,16 @@ barloader.textpage: barloader.text bin/text2page
 	bin/text2page <$< >$@
 
 gameserverclientbar.dsk: barloader.textpage gameserverclient bin/c2d Makefile
-	 bin/c2d -b -t $< gameserverclient,800 $@
+	bin/c2d -b -t $< gameserverclient,800 $@
 
 bargrloader.textpage: bin/mandelbrotgr
 	bin/mandelbrotgr >$@
 
 gameserverclientbargr.dsk: bargrloader.textpage gameserverclient bin/c2d Makefile
-	 bin/c2d -b -g -r 23 -t $< gameserverclient,800 $@
+	bin/c2d -b -g -r 23 -t $< gameserverclient,800 $@
 
 gameserverclient.dsk: gameserverclient bin/c2d Makefile
-	 bin/c2d gameserverclient,800 $@
+	bin/c2d gameserverclient,800 $@
 
 dsk: gameserverclient.dsk gameserverclientbar.dsk gameserverclientbargr.dsk
 

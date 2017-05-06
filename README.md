@@ -6,11 +6,15 @@
 > 
 > Weishaar, Tom. *Running without filenames*. Open-Apple Jan. 1985 Vol. 1, No. 0: p. 7 (<http://apple2online.com/web_documents/Open%20Apple%20Vol1No00.pdf>)
 
+`c2d` early history: http://macgui.com/usenet/?group=1&id=254902#msg
+
 
 ### Features
 
+*  `$800-$B6FF` available for binary code.
+	* After load `$B700-$BFFF` free.
 *  Platforms tested:
-	*  32-bit/64-bit x86 OS/X.
+	*  32-bit/64-bit x86 OS/X and MacOS.
 	*  32-bit x86 Windows/MinGW.
 
 
@@ -33,7 +37,7 @@ Unix/Linux:
 
 *or*
 
-OS/X, Linux, Cygwin:
+MacOS, OS/X, Linux, Cygwin:
 
 	gcc -Wall -Wno-missing-braces -I. -O3 -o c2d c2d.c -lm
 	gcc -Wall -O3 -o bin/text2page text2page.c -lm
@@ -135,7 +139,7 @@ page2text <gameserverclient.textpage >gameserverclient.text
 
 ### Testing
 
-Automated testing is only supported on OS/X and requires the following:
+Automated testing is only supported on MacOS (OS/X) and requires the following:
 
 
 * Virtual ][ (<http://http://www.virtualii.com/>)
@@ -144,9 +148,9 @@ Automated testing is only supported on OS/X and requires the following:
 
 To test, type:
 ```
-make test     # OS/X only
-make disttest # OS/X and Windows
-make fulltest # OS/X, Windows, and Virtual ][
+make test     # MacOS, OS/X only
+make disttest # MacOS, OS/X and Windows
+make fulltest # MacOS, OS/X, Windows, and Virtual ][
 ```
 > If Virtual ][ crashes while testing, just `make fulltest` again 
 
