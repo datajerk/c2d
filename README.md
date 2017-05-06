@@ -12,7 +12,7 @@
 ### Features
 
 *  `$800-$B6FF` available for binary code.
-	* After load `$B700-$BFFF` free.
+	* `$B700-$BFFF` free after load.
 *  Platforms tested:
 	*  32-bit/64-bit x86 OS/X and MacOS.
 	*  32-bit x86 Windows/MinGW.
