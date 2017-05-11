@@ -14,7 +14,7 @@
 *  `$800-$B6FF` available for binary code.
 	* `$B700-$BFFF` free after load.
 *  Platforms tested:
-	*  32-bit/64-bit x86 OS/X and MacOS.
+	*  32-bit/64-bit x86 MacOS|OS/X.
 	*  32-bit x86 Windows/MinGW.
 
 
@@ -37,7 +37,7 @@ Unix/Linux:
 
 *or*
 
-MacOS, OS/X, Linux, Cygwin:
+MacOS|OS/X, Linux, Cygwin:
 
 	gcc -Wall -Wno-missing-braces -I. -O3 -o c2d c2d.c -lm
 	gcc -Wall -O3 -o bin/text2page text2page.c -lm
@@ -139,7 +139,7 @@ page2text <gameserverclient.textpage >gameserverclient.text
 
 ### Testing
 
-Automated testing is only supported on MacOS (OS/X) and requires the following:
+Automated testing is only supported on MacOS|OS/X and requires the following:
 
 
 * Virtual ][ (<http://http://www.virtualii.com/>)
@@ -148,9 +148,9 @@ Automated testing is only supported on MacOS (OS/X) and requires the following:
 
 To test, type:
 ```
-make test     # MacOS, OS/X only
-make disttest # MacOS, OS/X and Windows
-make fulltest # MacOS, OS/X, Windows, and Virtual ][
+make test     # MacOS|OS/X only
+make disttest # MacOS|OS/X and Windows
+make fulltest # MacOS|OS/X, Windows, and Virtual ][
 ```
 > If Virtual ][ crashes while testing, just `make fulltest` again 
 
