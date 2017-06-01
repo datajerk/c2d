@@ -1,5 +1,6 @@
 
 WIN32GCC = /usr/local/gcc-4.8.0-qt-4.8.4-for-mingw32/win32-gcc/bin/i586-mingw32-gcc
+C2T = c2t
 
 all: bin/c2d bin/text2page bin/page2text
 
@@ -77,6 +78,9 @@ gameserverclient.dsk: gameserverclient bin/c2d Makefile
 	bin/c2d gameserverclient,800 $@
 
 dsk: gameserverclient.dsk gameserverclientbar.dsk gameserverclientbargr.dsk
+
+gameserverclient.mon: gameserverclient
+	$(C2T) gameserverclient,800 gameserverclient.mon
 
 fulltest: gameserverclient gameserverclient.mon gameserverclient.text gameserverclient.tiff gameserverclientsplash.tiff test.sh test.scrp dist
 	EMU=1 WIN=1 ./test.sh
