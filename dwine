@@ -1,0 +1,4 @@
+#!/bin/bash
+
+set -x
+docker run --rm -it -v $PWD:/pwd wine32 bash -c "cd /pwd && wine $*"

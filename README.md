@@ -32,6 +32,7 @@ Download <https://github.com/datajerk/c2d/archive/master.zip> and extract.
 ### Build Notes
 
 NOTE: cc65 2.13.3 required (no other version supported)
+NOTE: Docker required for `make disttest`
 
 Unix/Linux:
 

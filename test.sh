@@ -47,9 +47,8 @@ then
 	echo
 	echo "Testing Windows c2d..."
 	echo
-	PATH=$HOME/wine/bin:$PATH
-	echo "wine bin/c2d.exe ${BIN},${ADDR} ${BIN}.dsk"
-	wine bin/c2d.exe ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
+	echo "./dwine bin/c2d.exe ${BIN},${ADDR} ${BIN}.dsk"
+	./dwine bin/c2d.exe ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
 	CHECK=$(md5sum ${BIN}.dsk | awk '{print $1}')
 	if [ "$CHECK" = "$SUM" ]
 	then
@@ -104,11 +103,10 @@ then
 	echo
 	echo "Testing Windows c2d textpage..."
 	echo
-	PATH=$HOME/wine/bin:$PATH
-	echo "wine bin/text2page.exe <${BIN}.text >${BIN}.textpage"
-	wine bin/text2page.exe <${BIN}.text >${BIN}.textpage
-	echo "wine bin/c2d.exe -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk"
-	wine bin/c2d.exe -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
+	echo "./dwine bin/text2page.exe <${BIN}.text >${BIN}.textpage"
+	./dwine bin/text2page.exe '<'${BIN}.text '>'${BIN}.textpage
+	echo "./dwine bin/c2d.exe -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk"
+	./dwine bin/c2d.exe -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk 2>&1 | sed 's/^/    /'
 	CHECK=$(md5sum ${BIN}.dsk | awk '{print $1}')
 	if [ "$CHECK" = "$SUM" ]
 	then
@@ -145,9 +143,8 @@ rm -f ${BIN}.dsk
 	echo
 	echo "Testing Windows c2d..."
 	echo
-	PATH=$HOME/wine/bin:$PATH
-	echo "wine bin/c2d.exe ${BIN},${ADDR} ${BIN}.dsk"
-	wine bin/c2d.exe ${MON} ${BIN}.dsk 2>&1 | sed 's/^/    /'
+	echo "./dwine bin/c2d.exe ${BIN},${ADDR} ${BIN}.dsk"
+	./dwine bin/c2d.exe ${MON} ${BIN}.dsk 2>&1 | sed 's/^/    /'
 	CHECK=$(md5sum ${BIN}.dsk | awk '{print $1}')
 	if [ "$CHECK" = "$SUM" ]
 	then
@@ -183,11 +180,10 @@ then
 	echo
 	echo "Testing Windows c2d textpage..."
 	echo
-	PATH=$HOME/wine/bin:$PATH
-	echo "wine bin/text2page.exe <${BIN}.text >${BIN}.textpage"
-	wine bin/text2page.exe <${BIN}.text >${BIN}.textpage
-	echo "wine bin/c2d.exe -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk"
-	wine bin/c2d.exe -t ${BIN}.textpage ${MON} ${BIN}.dsk 2>&1 | sed 's/^/    /'
+	echo "./dwine bin/text2page.exe <${BIN}.text >${BIN}.textpage"
+	./dwine bin/text2page.exe '<'${BIN}.text '>'${BIN}.textpage
+	echo "./dwine bin/c2d.exe -t ${BIN}.textpage ${BIN},${ADDR} ${BIN}.dsk"
+	./dwine bin/c2d.exe -t ${BIN}.textpage ${MON} ${BIN}.dsk 2>&1 | sed 's/^/    /'
 	CHECK=$(md5sum ${BIN}.dsk | awk '{print $1}')
 	if [ "$CHECK" = "$SUM" ]
 	then
