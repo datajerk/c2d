@@ -17,7 +17,7 @@ on run argv
 		set theMachine to (make new AppleIIe)
 		tell theMachine
 			-- Change to a color screen
-			-- set monochrome screen to false
+			set monochrome screen to false
 			set scanlines to true
 			set speaker volume to 0.25
 			insert my_path & my_disk into device "S6D1"
