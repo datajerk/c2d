@@ -8,32 +8,63 @@ windows: bin/c2d.exe bin/text2page.exe bin/page2text.exe
 
 dist: all windows
 
-c2d.h: c2d.h.0 asm/loader.s asm/bar.s makeheader
+cc65-sources-2.13.3.tar.bz2:
+	curl -sLO https://github.com/mrdudz/cc65-old/raw/master/cc65-sources-2.13.3.tar.bz2
+
+cc65-2.13.3/bin/cl65: cc65-sources-2.13.3.tar.bz2
+	tar zxf cc65-sources-2.13.3.tar.bz2
+	(cd cc65-2.13.3; /usr/bin/sed 's!/usr/local!'${PWD}'/cc65-2.13.3!' <make/gcc.mak >Makefile; make -j4 bins || make bins && make install || true)
+
+c2d.h: c2d.h.0 asm/loader.s asm/bar.s makeheader cc65-2.13.3/bin/cl65
 	./makeheader
 
-bin/c2d: c2d.c c2d.h
-	gcc -Wall -Wno-missing-braces -I. -O3 -o $@ $< -lm
+bin/c2d_arm: c2d.c c2d.h
+	gcc -Wall -Wno-missing-braces -I. -O3 -target arm64-apple-macos11 -o $@ $< -lm
+
+bin/text2page_arm: text2page.c
+	gcc -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
+
+bin/page2text_arm: page2text.c
+	gcc -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
+
+bin/mandelbrotgr_arm: mandelbrotgr.c
+	gcc -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
+
+bin/c2d_x86: c2d.c c2d.h
+	gcc -Wall -Wno-missing-braces -I. -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
+
+bin/text2page_x86: text2page.c
+	gcc -Wall -O3 -target -x86_64-apple-macos10.12 -o $@ $< -lm
+
+bin/page2text_x86: page2text.c
+	gcc -Wall -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
+
+bin/mandelbrotgr_x86: mandelbrotgr.c
+	gcc -Wall -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
+
+bin/c2d: bin/c2d_x86 bin/c2d_arm
+	lipo -create -output $@ $<
+
+bin/text2page: bin/text2page_x86 bin/text2page_arm
+	lipo -create -output $@ $<
+
+bin/page2text: bin/page2text_x86 bin/page2text_arm
+	lipo -create -output $@ $<
+
+bin/mandelbrotgr: bin/mandelbrotgr_x86 bin/mandelbrotgr_arm
+	lipo -create -output $@ $<
 
 bin/c2d.exe: c2d.c c2d.h
 	$(WIN32GCC) -Wall -Wno-missing-braces -I. -O3 -o $@ $<
 
-bin/text2page: text2page.c
-	gcc -Wall -O3 -o $@ $< -lm
-
 bin/text2page.exe: text2page.c
 	$(WIN32GCC) -Wall -O3 -o $@ $<
-
-bin/page2text: page2text.c
-	gcc -Wall -O3 -o $@ $< -lm
 
 bin/page2text.exe: page2text.c
 	$(WIN32GCC) -Wall -O3 -o $@ $<
 
-bin/mandelbrotgr: mandelbrotgr.c
-	gcc -Wall -O3 -o $@ $< -lm
-
 clean:
-	rm -f bin/* *.dsk c2d.h c2d.h.1
+	rm -rf bin/* *.dsk c2d.h c2d.h.1 cc65-sources-2.13.3.tar.bz2 cc65-2.13.3
 	(cd asm; make clean)
 
 gameserverclient.text: Makefile

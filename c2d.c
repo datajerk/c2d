@@ -336,7 +336,8 @@ char *getext(char *filename)
 	if (sp == strlen(filename) || sp == 0)
 		return (NULL);
 
-	if ((rval = (char *) malloc(sp * sizeof(char))) == NULL);	//do error code
+	if ((rval = (char *) malloc(sp * sizeof(char))) == NULL)
+		;	//do error code
 
 	rval[sp] = '\0';
 	for (i = 0; i < sp + i; i++)
