@@ -31,8 +31,8 @@ Download <https://github.com/datajerk/c2d/archive/master.zip> and extract.
 
 ### Build Notes
 
-NOTE: cc65 2.13.3 required (no other version supported)
-NOTE: Docker required for `make disttest`
+NOTE: cc65 2.13.3 required (no other version supported)  
+NOTE: Docker required for `make disttest`; run this once first `docker build --no-cache -t   wine32 -f Dockerfile.wine32 .`  
 
 Unix/Linux:
 
