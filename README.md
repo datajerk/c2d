@@ -29,6 +29,11 @@ git clone https://github.com/datajerk/c2d.git
 Download <https://github.com/datajerk/c2d/archive/master.zip> and extract.
 
 
+### No Build Notes
+
+Just get the files from [`bin`](https://github.com/datajerk/c2d/tree/master/bin).  32-bit Windows and MacOS (universal x86_64/arm64) included.
+
+
 ### Build Notes
 
 Unix/Linux:
