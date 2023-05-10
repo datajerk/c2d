@@ -4,7 +4,7 @@
 
 > Based on work by:
 > 
-> Weishaar, Tom. *Running without filenames*. Open-Apple Jan. 1985 Vol. 1, No. 0: p. 7 (<http://apple2online.com/web_documents/Open%20Apple%20Vol1No00.pdf>)
+> Weishaar, Tom. *Running without filenames*. Open-Apple Jan. 1985 Vol. 1, No. 0: p. 7 (<https://web.archive.org/web/20150325102420/http://apple2online.com/web_documents/Open%20Apple%20Vol1No00.pdf>)
 
 `c2d` early history: http://macgui.com/usenet/?group=1&id=254902#msg
 
@@ -30,9 +30,6 @@ Download <https://github.com/datajerk/c2d/archive/master.zip> and extract.
 
 
 ### Build Notes
-
-NOTE: cc65 2.13.3 required (no other version supported)  
-NOTE: Docker required for `make disttest`; run this once first `docker build --no-cache -t wine32 -f Dockerfile.wine32 .`  
 
 Unix/Linux:
 
@@ -144,10 +141,11 @@ page2text <gameserverclient.textpage >gameserverclient.text
 
 Automated testing is only supported on MacOS|OS/X and requires the following:
 
-
 * Virtual ][ (<http://http://www.virtualii.com/>)
-* Windows cross-compiling tools <http://crossgcc.rts-software.org/download/gcc-4.8.0-qt-4.8.4-win32/gcc-4.8.0-qt-4.8.4-for-mingw32.dmg>
-* Wine (<http://winehq.org>) installed in `~/wine` (extract the tarball in `~/wine` and move the contents of `~/wine/usr` to `~/wine`, or change the path to `wine` in `tests/test.sh`).
+* Windows cross-compiling tools <https://web.archive.org/web/20151009134313/http://crossgcc.rts-software.org/download/gcc-4.8.0-qt-4.8.4-win32/gcc-4.8.0-qt-4.8.4-for-mingw32.dmg>
+* Docker required for Windows binary testing; run this once first `docker build --no-cache -t wine32 -f Dockerfile.wine32 .`
+
+NOTE: Windows binary testing only supported on MacOS x86_64 machines.
 
 To test, type:
 ```
@@ -155,7 +153,6 @@ make test     # MacOS|OS/X only
 make disttest # MacOS|OS/X and Windows
 make fulltest # MacOS|OS/X, Windows, and Virtual ][
 ```
-> If Virtual ][ crashes while testing, just `make fulltest` again 
 
 
 ### Bugs
