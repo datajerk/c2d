@@ -49,7 +49,7 @@ Bugs:
 #define MONITOR 1
 #define LOADER "loader"
 
-void usage();
+void usage(void);
 char *getext(char *filename);
 
 int main(int argc, char **argv)
@@ -346,7 +346,7 @@ char *getext(char *filename)
 	return (rval);
 }
 
-void usage()
+void usage(void)
 {
 	fprintf(stderr, "%s", usagetext);
 }
