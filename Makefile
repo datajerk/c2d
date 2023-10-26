@@ -19,28 +19,28 @@ c2d.h: c2d.h.0 asm/loader.s asm/bar.s makeheader cc65-2.13.3/bin/cl65
 	./makeheader
 
 bin/c2d_arm: c2d.c c2d.h
-	gcc -Wall -Wno-missing-braces -I. -O3 -target arm64-apple-macos11 -o $@ $< -lm
+	$(CC) -Wall -Wno-missing-braces -I. -O3 -target arm64-apple-macos11 -o $@ $< -lm
 
 bin/text2page_arm: text2page.c
-	gcc -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
+	$(CC) -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
 
 bin/page2text_arm: page2text.c
-	gcc -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
+	$(CC) -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
 
 bin/mandelbrotgr_arm: mandelbrotgr.c
-	gcc -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
+	$(CC) -Wall -O3 -target arm64-apple-macos11 -o $@ $< -lm
 
 bin/c2d_x86: c2d.c c2d.h
-	gcc -Wall -Wno-missing-braces -I. -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
+	$(CC) -Wall -Wno-missing-braces -I. -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
 
 bin/text2page_x86: text2page.c
-	gcc -Wall -O3 -target -x86_64-apple-macos10.12 -o $@ $< -lm
+	$(CC) -Wall -O3 -target -x86_64-apple-macos10.12 -o $@ $< -lm
 
 bin/page2text_x86: page2text.c
-	gcc -Wall -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
+	$(CC) -Wall -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
 
 bin/mandelbrotgr_x86: mandelbrotgr.c
-	gcc -Wall -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
+	$(CC) -Wall -O3 -target x86_64-apple-macos10.12 -o $@ $< -lm
 
 bin/c2d: bin/c2d_x86 bin/c2d_arm
 	lipo -create -output $@ $<
