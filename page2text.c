@@ -2,7 +2,7 @@
 
 #define MASK 0x7F
 
-int main()
+int main(int argc, char **argv)
 {
 	int i, j, k, line;
 	char screen[24][40];

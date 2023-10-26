@@ -3,7 +3,7 @@
 #define NORMAL 0x80
 #define BLINK 0x40
 
-int main()
+int main(int argc, char **argv)
 {
 	char c;
 	int i, j, k, line = 0;
