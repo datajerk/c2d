@@ -1,4 +1,4 @@
 #!/bin/bash
 
 set -x
-docker run --rm -it -v $PWD:/pwd wine32 bash -c "cd /pwd && wine $*"
+docker run --rm -it -v $PWD:/pwd wine32 bash -c "cd /pwd && sleep 1 && wine $*"
